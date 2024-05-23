@@ -3,15 +3,17 @@ extends Node2D
 # export(String) var color;
 
 @export var color = "";
-var move_tween = null;
+#var move_tween = null;
 var timeout = 0.0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	move_tween = create_tween();
-	print("Node:",self, "created tween:", move_tween)
+	pass ;
+	#move_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	#print("Node:", self, "created tween:", move_tween)
 
 func move(target):
+	var move_tween = create_tween();
 	print(self)
 	print("Current Position:", position)
 	print("Target Position:", target)

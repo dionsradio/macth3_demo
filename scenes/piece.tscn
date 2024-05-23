@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/piece.gd" id="1_345jx"]
 
 [node name="piece" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_345jx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
