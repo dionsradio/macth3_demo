@@ -12,10 +12,11 @@ var state
 @export var y_offset: int;
 
 # Obstacle Stuff
-@export var empty_spaces: PackedVector2Array;
-@export var ice_spaces: PackedVector2Array;
-@export var lock_spaces: PackedVector2Array;
-@export var concrete_spaces: PackedVector2Array;
+@export var empty_spaces: PackedVector2Array
+@export var ice_spaces: PackedVector2Array
+@export var lock_spaces: PackedVector2Array
+@export var concrete_spaces: PackedVector2Array
+@export var slime_spaces: PackedVector2Array
 
 # Obstacle Signal
 signal make_ice
@@ -24,6 +25,8 @@ signal make_lock
 signal damage_lock
 signal make_concrete
 signal damage_concrete
+signal make_slime
+signal damage_slime
 
 # piece scenes
 var possible_pieces = [
@@ -58,6 +61,7 @@ func _ready():
 	spawn_ice()
 	spawn_locks()
 	spawn_concrete()
+	spawn_slime()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -82,6 +86,8 @@ func restricted_fill(place):
 	if is_in_array(empty_spaces, place):
 		return true
 	if is_in_array(concrete_spaces, place):
+		return true
+	if is_in_array(slime_spaces, place):
 		return true
 	return false
 
@@ -127,6 +133,10 @@ func spawn_locks():
 func spawn_concrete():
 	for i in concrete_spaces.size():
 		emit_signal("make_concrete", concrete_spaces[i])
+
+func spawn_slime():
+	for i in slime_spaces.size():
+		emit_signal("make_slime", slime_spaces[i])
 
 # check match at specific location
 func match_at(column, row, color):
@@ -283,10 +293,21 @@ func check_concrete(column, row):
 	if row > 0:
 		emit_signal("damage_concrete", Vector2(column, row - 1))
 
+func check_slime(column, row):
+	if column < width - 1:
+		emit_signal("damage_slime", Vector2(column + 1, row))
+	if column > 0:
+		emit_signal("damage_slime", Vector2(column - 1, row))
+	if row < height - 1:
+		emit_signal("damage_slime", Vector2(column, row + 1))
+	if row > 0:
+		emit_signal("damage_slime", Vector2(column, row - 1))
+
 func damage_specical(column, row):
 	emit_signal("damage_ice", Vector2(column, row))
 	emit_signal("damage_lock", Vector2(column, row))
 	check_concrete(column, row)
+	check_slime(column, row)
 
 func refill_columns():
 	for i in width:
@@ -331,3 +352,7 @@ func _on_lock_holder_remove_lock(place):
 
 func _on_concrete_holder_remove_concrete(place):
 	remove_from_array(concrete_spaces, place)
+
+
+func _on_slime_holder_remove_slime(place):
+	remove_from_array(slime_spaces, place)
