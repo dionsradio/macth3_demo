@@ -13,6 +13,11 @@ var state
 
 # Obstacle Stuff
 @export var empty_spaces: PackedVector2Array;
+@export var ice_spaces: PackedVector2Array;
+
+# Obstacle Signals
+signal damage_ice
+signal make_ice
 
 # piece scenes
 var possible_pieces = [
@@ -40,10 +45,11 @@ var controlling = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	state = move;
-	randomize();
-	all_pieces = make_2d_array();
-	spawn_pieces();
+	state = move
+	randomize()
+	all_pieces = make_2d_array()
+	spawn_pieces()
+	spawn_ice()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -85,6 +91,10 @@ func spawn_pieces():
 				piece.position = grid_to_pixel(i, j)
 				all_pieces[i][j] = piece;
 				add_child(piece);
+
+func spawn_ice():
+	for i in ice_spaces.size():
+		emit_signal("make_ice", ice_spaces[i])
 
 # check match at specific location
 func match_at(column, row, color):
@@ -224,9 +234,10 @@ func destroy_matched():
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
-					destroyed = true;
-					all_pieces[i][j].queue_free();
-					all_pieces[i][j] = null;
+					emit_signal("damage_ice", Vector2(i, j))
+					destroyed = true
+					all_pieces[i][j].queue_free()
+					all_pieces[i][j] = null
 	if destroyed == true:
 		get_parent().get_node("collapse_timer").start();
 
