@@ -15,12 +15,15 @@ var state
 @export var empty_spaces: PackedVector2Array;
 @export var ice_spaces: PackedVector2Array;
 @export var lock_spaces: PackedVector2Array;
+@export var concrete_spaces: PackedVector2Array;
 
 # Obstacle Signal
 signal make_ice
 signal damage_ice
 signal make_lock
 signal damage_lock
+signal make_concrete
+signal damage_concrete
 
 # piece scenes
 var possible_pieces = [
@@ -54,6 +57,7 @@ func _ready():
 	spawn_pieces()
 	spawn_ice()
 	spawn_locks()
+	spawn_concrete()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -75,11 +79,16 @@ func make_2d_array():
 	return array;
 
 func restricted_fill(place):
-	return is_in_array(empty_spaces, place)
+	if is_in_array(empty_spaces, place):
+		return true
+	if is_in_array(concrete_spaces, place):
+		return true
+	return false
 
 func restricted_move(place):
 	if is_in_array(lock_spaces, place):
 		return true
+	return false
 
 func is_in_array(array, item):
 	for i in array.size():
@@ -87,6 +96,10 @@ func is_in_array(array, item):
 			return true
 	return false
 
+func remove_from_array(array, item):
+	for i in range(array.size() - 1, -1, -1):
+		if array[i] == item:
+			array.remove_at(i)
 # create random color pieces
 # NOTE: should add code to avoid match when first generated
 func spawn_pieces():
@@ -110,6 +123,10 @@ func spawn_ice():
 func spawn_locks():
 	for i in lock_spaces.size():
 		emit_signal("make_lock", lock_spaces[i])
+
+func spawn_concrete():
+	for i in concrete_spaces.size():
+		emit_signal("make_concrete", concrete_spaces[i])
 
 # check match at specific location
 func match_at(column, row, color):
@@ -256,9 +273,20 @@ func destroy_matched():
 	if destroyed == true:
 		get_parent().get_node("collapse_timer").start()
 
+func check_concrete(column, row):
+	if column < width - 1:
+		emit_signal("damage_concrete", Vector2(column + 1, row))
+	if column > 0:
+		emit_signal("damage_concrete", Vector2(column - 1, row))
+	if row < height - 1:
+		emit_signal("damage_concrete", Vector2(column, row + 1))
+	if row > 0:
+		emit_signal("damage_concrete", Vector2(column, row - 1))
+
 func damage_specical(column, row):
 	emit_signal("damage_ice", Vector2(column, row))
 	emit_signal("damage_lock", Vector2(column, row))
+	check_concrete(column, row)
 
 func refill_columns():
 	for i in width:
@@ -299,6 +327,7 @@ func _on_refill_timer_timeout():
 	refill_columns();
 
 func _on_lock_holder_remove_lock(place):
-	for i in range(lock_spaces.size() - 1, -1, -1):
-		if lock_spaces[i] == place:
-			lock_spaces.remove_at(i)
+	remove_from_array(lock_spaces, place)
+
+func _on_concrete_holder_remove_concrete(place):
+	remove_from_array(concrete_spaces, place)
