@@ -17,7 +17,7 @@ func move(target):
 	var move_tween = create_tween();
 	move_tween.set_trans(Tween.TRANS_ELASTIC)
 	move_tween.set_ease(Tween.EASE_OUT)
-	move_tween.tween_property(self, "position", target, 0.4)
+	move_tween.tween_property(self, "position", target, 0.8)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

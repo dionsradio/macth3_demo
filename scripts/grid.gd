@@ -11,6 +11,9 @@ var state
 @export var offset: int;
 @export var y_offset: int;
 
+# Obstacle Stuff
+@export var empty_spaces: PackedVector2Array;
+
 # piece scenes
 var possible_pieces = [
 	preload ("res://scenes/yellow_piece.tscn"),
@@ -45,7 +48,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print("state:", state)
+	# print("state: ", state);
 	if state == move:
 		touch_input()
 
@@ -61,20 +64,27 @@ func make_2d_array():
 			array[i].append(null);
 	return array;
 
+func restricted_movement(place):
+	for i in empty_spaces.size():
+		if empty_spaces[i] == place:
+			return true;
+	return false;
+
 # create random color pieces
 # NOTE: should add code to avoid match when first generated
 func spawn_pieces():
 	for i in width:
 		for j in height:
-			# choose a random number and store it
-			var rand = floor(randf_range(0, possible_pieces.size()));
-			var piece = possible_pieces[rand].instantiate(); # instance() func is no longer used;
-			while (match_at(i, j, piece.color)):
-				rand = floor(randf_range(0, possible_pieces.size()));
-				piece = possible_pieces[rand].instantiate();
-			piece.position = grid_to_pixel(i, j)
-			all_pieces[i][j] = piece;
-			add_child(piece);
+			if !restricted_movement(Vector2(i, j)):
+				# choose a random number and store it
+				var rand = floor(randf_range(0, possible_pieces.size()));
+				var piece = possible_pieces[rand].instantiate(); # instance() func is no longer used;
+				while (match_at(i, j, piece.color)):
+					rand = floor(randf_range(0, possible_pieces.size()));
+					piece = possible_pieces[rand].instantiate();
+				piece.position = grid_to_pixel(i, j)
+				all_pieces[i][j] = piece;
+				add_child(piece);
 
 # check match at specific location
 func match_at(column, row, color):
@@ -127,6 +137,8 @@ func swap_pieces(column, row, direction, _find_matched=true):
 		other_piece.move(grid_to_pixel(column, row))
 		if _find_matched:
 			find_matches()
+		else:
+			state = move;
 
 func store_info(last_piece, other_piece, place, direction):
 	piece_one = last_piece;
@@ -141,18 +153,18 @@ func swap_back():
 	state = move
 
 func collapse_columns():
-	var collapsed = false;
+	# var collapsed = false;
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] == null:
+			if all_pieces[i][j] == null&&!restricted_movement(Vector2(i, j)):
 				for k in range(j + 1, height):
 					if all_pieces[i][k] != null:
 						all_pieces[i][k].move(grid_to_pixel(i, j))
 						all_pieces[i][j] = all_pieces[i][k]
 						all_pieces[i][k] = null
-						collapsed = true;
+						# collapsed = true;
 						break
-	if collapsed == true:
+	# if collapsed == true:
 		get_parent().get_node("refill_timer").start();
 
 func touch_difference(grid_1, grid_2):
@@ -217,13 +229,11 @@ func destroy_matched():
 					all_pieces[i][j] = null;
 	if destroyed == true:
 		get_parent().get_node("collapse_timer").start();
-	# else:
-		# swap_back()
 
 func refill_columns():
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] == null:
+			if all_pieces[i][j] == null&&!restricted_movement(Vector2(i, j)):
 				var rand = floor(randf_range(0, possible_pieces.size()));
 				var piece = possible_pieces[rand].instantiate(); # instance() func is no longer used;
 				while (match_at(i, j, piece.color)):
