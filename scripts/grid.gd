@@ -70,18 +70,21 @@ func make_2d_array():
 			array[i].append(null);
 	return array;
 
-func restricted_movement(place):
-	for i in empty_spaces.size():
-		if empty_spaces[i] == place:
-			return true;
-	return false;
+func restricted_fill(place):
+	return is_in_array(empty_spaces, place)
+
+func is_in_array(array, item):
+	for i in array.size():
+		if array[i] == item:
+			return true
+	return false
 
 # create random color pieces
 # NOTE: should add code to avoid match when first generated
 func spawn_pieces():
 	for i in width:
 		for j in height:
-			if !restricted_movement(Vector2(i, j)):
+			if !restricted_fill(Vector2(i, j)):
 				# choose a random number and store it
 				var rand = floor(randf_range(0, possible_pieces.size()));
 				var piece = possible_pieces[rand].instantiate(); # instance() func is no longer used;
@@ -166,7 +169,7 @@ func collapse_columns():
 	# var collapsed = false;
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] == null&&!restricted_movement(Vector2(i, j)):
+			if all_pieces[i][j] == null&&!restricted_fill(Vector2(i, j)):
 				for k in range(j + 1, height):
 					if all_pieces[i][k] != null:
 						all_pieces[i][k].move(grid_to_pixel(i, j))
@@ -195,37 +198,35 @@ func find_matches():
 	var matched = false;
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] != null:
+			if !is_piece_null(i, j):
 				var current_color = all_pieces[i][j].color
-				var current_piece = all_pieces[i][j]
 				if i > 0&&i < width - 1:
-					var left_piece = all_pieces[i - 1][j];
-					var right_piece = all_pieces[i + 1][j];
-					if left_piece != null&&right_piece != null:
-							if left_piece.color == current_color&&right_piece.color == current_color:
-								current_piece.matched = true
-								current_piece.dim()
-								left_piece.matched = true
-								left_piece.dim()
-								right_piece.matched = true
-								right_piece.dim()
+					if !is_piece_null(i - 1, j)&&!is_piece_null(i + 1, j):
+							if all_pieces[i - 1][j].color == current_color&&all_pieces[i + 1][j].color == current_color:
+								match_and_dim(all_pieces[i][j])
+								match_and_dim(all_pieces[i - 1][j])
+								match_and_dim(all_pieces[i + 1][j])
 								matched = true
 				if j > 0&&j < height - 1:
-					var top_piece = all_pieces[i][j - 1];
-					var bottom_piece = all_pieces[i][j + 1];
-					if top_piece != null&&bottom_piece != null:
-							if top_piece.color == current_color&&bottom_piece.color == current_color:
-								current_piece.matched = true
-								current_piece.dim()
-								top_piece.matched = true
-								top_piece.dim()
-								bottom_piece.matched = true
-								bottom_piece.dim()
+					if !is_piece_null(i, j - 1)&&!is_piece_null(i, j + 1):
+							if all_pieces[i][j - 1].color == current_color&&all_pieces[i][j + 1].color == current_color:
+								match_and_dim(all_pieces[i][j])
+								match_and_dim(all_pieces[i][j - 1])
+								match_and_dim(all_pieces[i][j + 1])
 								matched = true
 	if matched == true:
 		get_parent().get_node("destroy_timer").start();
 	else:
 		swap_back();
+
+func is_piece_null(column, row):
+	if all_pieces[column][row] == null:
+		return true
+	return false
+
+func match_and_dim(item):
+	item.matched = true
+	item.dim()
 
 # find and destroy matched pieces
 func destroy_matched():
@@ -244,7 +245,7 @@ func destroy_matched():
 func refill_columns():
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] == null&&!restricted_movement(Vector2(i, j)):
+			if all_pieces[i][j] == null&&!restricted_fill(Vector2(i, j)):
 				var rand = floor(randf_range(0, possible_pieces.size()));
 				var piece = possible_pieces[rand].instantiate(); # instance() func is no longer used;
 				while (match_at(i, j, piece.color)):
