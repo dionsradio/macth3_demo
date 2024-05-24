@@ -14,10 +14,13 @@ var state
 # Obstacle Stuff
 @export var empty_spaces: PackedVector2Array;
 @export var ice_spaces: PackedVector2Array;
+@export var lock_spaces: PackedVector2Array;
 
-# Obstacle Signals
-signal damage_ice
+# Obstacle Signal
 signal make_ice
+signal damage_ice
+signal make_lock
+signal damage_lock
 
 # piece scenes
 var possible_pieces = [
@@ -50,6 +53,7 @@ func _ready():
 	all_pieces = make_2d_array()
 	spawn_pieces()
 	spawn_ice()
+	spawn_locks()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -72,6 +76,10 @@ func make_2d_array():
 
 func restricted_fill(place):
 	return is_in_array(empty_spaces, place)
+
+func restricted_move(place):
+	if is_in_array(lock_spaces, place):
+		return true
 
 func is_in_array(array, item):
 	for i in array.size():
@@ -98,6 +106,10 @@ func spawn_pieces():
 func spawn_ice():
 	for i in ice_spaces.size():
 		emit_signal("make_ice", ice_spaces[i])
+
+func spawn_locks():
+	for i in lock_spaces.size():
+		emit_signal("make_lock", lock_spaces[i])
 
 # check match at specific location
 func match_at(column, row, color):
@@ -141,17 +153,19 @@ func touch_input():
 func swap_pieces(column, row, direction, _find_matched=true):
 	var first_piece = all_pieces[column][row]
 	var other_piece = all_pieces[column + direction.x][row + direction.y]
-	all_pieces[column][row] = other_piece
-	all_pieces[column + direction.x][row + direction.y] = first_piece
+
 	if first_piece != null&&other_piece != null:
-		store_info(first_piece, other_piece, Vector2(column, row), direction)
-		state = wait
-		first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
-		other_piece.move(grid_to_pixel(column, row))
-		if _find_matched:
-			find_matches()
-		else:
-			state = move;
+		if !restricted_move(Vector2(column, row))&&!restricted_move(Vector2(column, row) + direction):
+			store_info(first_piece, other_piece, Vector2(column, row), direction)
+			state = wait
+			all_pieces[column][row] = other_piece
+			all_pieces[column + direction.x][row + direction.y] = first_piece
+			first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
+			other_piece.move(grid_to_pixel(column, row))
+			if _find_matched:
+				find_matches()
+			else:
+				state = move;
 
 func store_info(last_piece, other_piece, place, direction):
 	piece_one = last_piece;
@@ -235,12 +249,16 @@ func destroy_matched():
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
-					emit_signal("damage_ice", Vector2(i, j))
+					damage_specical(i, j)
 					destroyed = true
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
 	if destroyed == true:
-		get_parent().get_node("collapse_timer").start();
+		get_parent().get_node("collapse_timer").start()
+
+func damage_specical(column, row):
+	emit_signal("damage_ice", Vector2(column, row))
+	emit_signal("damage_lock", Vector2(column, row))
 
 func refill_columns():
 	for i in width:
@@ -279,3 +297,8 @@ func _on_collapse_timer_timeout():
 func _on_refill_timer_timeout():
 	print("_on_refill_timer_timeout");
 	refill_columns();
+
+func _on_lock_holder_remove_lock(place):
+	for i in range(lock_spaces.size() - 1, -1, -1):
+		if lock_spaces[i] == place:
+			lock_spaces.remove_at(i)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bb36smvbrxns7"]
+[gd_scene load_steps=7 format=3 uid="uid://bb36smvbrxns7"]
 
 [ext_resource type="Texture2D" uid="uid://dnwohqo8tt7sy" path="res://art/background 2.png" id="1_hyguy"]
 [ext_resource type="Texture2D" uid="uid://swgrlufxmqhv" path="res://art/Top UI v 2.png" id="2_d3fie"]
 [ext_resource type="Texture2D" uid="uid://but8fxtxygqiy" path="res://art/Bottom UI v 2.png" id="3_nd027"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="4_e21qk"]
 [ext_resource type="Script" path="res://scripts/ice_holder.gd" id="5_j5gfv"]
+[ext_resource type="Script" path="res://scripts/lock_holder.gd" id="6_vgu5m"]
 
 [node name="game_window" type="Node2D"]
 
@@ -34,6 +35,7 @@ offset = 64
 y_offset = 5
 empty_spaces = PackedVector2Array(0, 0, 7, 0, 0, 9, 7, 9, 3, 4, 4, 4, 3, 5, 4, 5)
 ice_spaces = PackedVector2Array(3, 0, 4, 0, 3, 9, 4, 9)
+lock_spaces = PackedVector2Array(3, 2, 4, 2, 3, 7, 4, 7)
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.1
@@ -50,8 +52,14 @@ one_shot = true
 [node name="ice_holder" type="Node2D" parent="."]
 script = ExtResource("5_j5gfv")
 
+[node name="lock_holder" type="Node2D" parent="."]
+script = ExtResource("6_vgu5m")
+
 [connection signal="damage_ice" from="grid" to="ice_holder" method="_on_grid_damage_ice"]
+[connection signal="damage_lock" from="grid" to="lock_holder" method="_on_grid_damage_lock"]
 [connection signal="make_ice" from="grid" to="ice_holder" method="_on_grid_make_ice"]
+[connection signal="make_lock" from="grid" to="lock_holder" method="_on_grid_make_lock"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
+[connection signal="remove_lock" from="lock_holder" to="grid" method="_on_lock_holder_remove_lock"]
