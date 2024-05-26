@@ -17,6 +17,7 @@ var state
 @export var lock_spaces: PackedVector2Array
 @export var concrete_spaces: PackedVector2Array
 @export var slime_spaces: PackedVector2Array
+var damaged_slime = false
 
 # Obstacle Signal
 signal make_ice
@@ -159,10 +160,10 @@ func pixel_to_grid(pixel_x, pixel_y):
 	var new_y = round((pixel_y - y_start) / - offset);
 	return Vector2(new_x, new_y);
 
-func is_in_grid(grid_position):
+func is_in_grid(grid_position: Vector2):
 	if grid_position.x >= 0&&grid_position.x < width&&grid_position.y >= 0&&grid_position.y < height:
-		return true;
-	return false;
+		return true
+	return false
 
 func touch_input():
 	if Input.is_action_just_pressed("ui_touch"):
@@ -332,9 +333,51 @@ func after_refill():
 				if match_at(i, j, all_pieces[i][j].color):
 					find_matches();
 					get_parent().get_node("destroy_timer").start()
-					break ;
-	state = move;
-				
+					return
+	if !damaged_slime:
+		generate_slime()
+	state = move
+	damaged_slime = false
+
+func generate_slime():
+	if slime_spaces.size() > 0:
+		var slime_made = false
+		var tracker = 0
+		while !slime_made:# and tracker < 100:
+			var random_num = floor(randf_range(0, slime_spaces.size()))
+			var current_x = slime_spaces[random_num].x
+			var current_y = slime_spaces[random_num].y
+			var neighbor = find_normal_neighbor(current_x, current_y)
+			if neighbor != null:
+				# Turn that neighbor into a slime
+				# Remove that piece
+				all_pieces[neighbor.x][neighbor.y].queue_free()
+				all_pieces[neighbor.x][neighbor.y] = null
+
+				slime_spaces.append(Vector2(neighbor.x, neighbor.y))
+				emit_signal("make_slime", Vector2(neighbor.x, neighbor.y))
+				slime_made = true
+			#tracker += 1
+
+func find_normal_neighbor(column, row):
+	# find right
+	if is_in_grid(Vector2(column + 1, row)):
+		if !is_piece_null(column + 1, row):
+			return Vector2(column + 1, row)
+	# find left
+	if is_in_grid(Vector2(column - 1, row)):
+		if !is_piece_null(column - 1, row):
+			return Vector2(column - 1, row)
+	# find above
+	if is_in_grid(Vector2(column, row + 1)):
+		if !is_piece_null(column, row + 1):
+			return Vector2(column, row + 1)
+	# find bellow
+	if is_in_grid(Vector2(column, row - 1)):
+		if !is_piece_null(column, row - 1):
+			return Vector2(column, row - 1)
+	return null
+
 func _on_destroy_timer_timeout():
 	print("_on_destroy_timer_timeout")
 	destroy_matched();
@@ -353,6 +396,7 @@ func _on_lock_holder_remove_lock(place):
 func _on_concrete_holder_remove_concrete(place):
 	remove_from_array(concrete_spaces, place)
 
-
 func _on_slime_holder_remove_slime(place):
+	print("_on_slime_holder_remove_slime:", place)
+	damaged_slime = true
 	remove_from_array(slime_spaces, place)
