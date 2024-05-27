@@ -25,7 +25,7 @@ func _process(delta):
 	pass
 
 func _on_grid_make_lock(board_position):
-	print("_on_grid_make_lock")
+	#print("_on_grid_make_lock")
 	if lock_pieces.size() == 0:
 		lock_pieces = make_2d_array()
 	var current = lock.instantiate()
@@ -34,7 +34,7 @@ func _on_grid_make_lock(board_position):
 	lock_pieces[board_position.x][board_position.y] = current
 
 func _on_grid_damage_lock(board_position):
-	print("_on_grid_damage_lock:",board_position)
+	#print("_on_grid_damage_lock:",board_position)
 	var lock_piece = lock_pieces[board_position.x][board_position.y]
 	if lock_piece != null:
 		lock_piece.take_damage(1)

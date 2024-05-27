@@ -40,7 +40,8 @@ var possible_pieces = [
 ];
 
 # generated pieces
-var all_pieces = [];
+var all_pieces = []
+var current_matched = []
 
 # Swap Back Variables;
 var piece_one = null;
@@ -103,10 +104,15 @@ func is_in_array(array, item):
 			return true
 	return false
 
+func add_to_array(item, array):
+	if !array.has(item):
+		array.append(item)
+
 func remove_from_array(array, item):
 	for i in range(array.size() - 1, -1, -1):
 		if array[i] == item:
 			array.remove_at(i)
+
 # create random color pieces
 # NOTE: should add code to avoid match when first generated
 func spawn_pieces():
@@ -248,6 +254,9 @@ func find_matches():
 								match_and_dim(all_pieces[i][j])
 								match_and_dim(all_pieces[i - 1][j])
 								match_and_dim(all_pieces[i + 1][j])
+								add_to_array(Vector2(i, j), current_matched)
+								add_to_array(Vector2(i - 1, j), current_matched)
+								add_to_array(Vector2(i + 1, j), current_matched)
 								matched = true
 				if j > 0&&j < height - 1:
 					if !is_piece_null(i, j - 1)&&!is_piece_null(i, j + 1):
@@ -255,16 +264,54 @@ func find_matches():
 								match_and_dim(all_pieces[i][j])
 								match_and_dim(all_pieces[i][j - 1])
 								match_and_dim(all_pieces[i][j + 1])
+								add_to_array(Vector2(i, j), current_matched)
+								add_to_array(Vector2(i, j - 1), current_matched)
+								add_to_array(Vector2(i, j + 1), current_matched)
 								matched = true
 	if matched == true:
-		get_parent().get_node("destroy_timer").start();
+		get_parent().get_node("destroy_timer").start()
 	else:
-		swap_back();
+		swap_back()
 
 func is_piece_null(column, row):
 	if all_pieces[column][row] == null:
 		return true
 	return false
+
+func find_bombs():
+	# Iterate over the current_matched array
+	for i in current_matched.size():
+		var curr_column = current_matched[i].x
+		var curr_row = current_matched[i].y
+		var curr_color = all_pieces[curr_column][curr_row].color
+		var matched_col = 0
+		var matched_row = 0
+		for j in current_matched.size():
+				var next_column = current_matched[j].x
+				var next_row = current_matched[j].y
+				var next_color = all_pieces[next_column][next_row].color
+				if next_color == curr_color&&next_column == curr_column:
+					matched_col += 1
+				if next_color == curr_color&&next_row == curr_row:
+					matched_row += 1
+		if matched_col == 4:
+			print("column bomb")
+		if matched_row == 4:
+			print("row bomb")
+		if matched_col == 3&&matched_row == 3:
+			print("adjacent bomb")
+		if matched_col == 5 or matched_row == 5:
+			print("color bomb")
+	pass ;
+
+func make_columb_bomb():
+	pass ;
+func make_row_bomb():
+	pass ;
+func make_adjacent_bomb():
+	pass ;
+func dim():
+	pass ;
 
 func match_and_dim(item):
 	item.matched = true
@@ -272,6 +319,7 @@ func match_and_dim(item):
 
 # find and destroy matched pieces
 func destroy_matched():
+	find_bombs()
 	var destroyed = false;
 	for i in width:
 		for j in height:
@@ -283,6 +331,7 @@ func destroy_matched():
 					all_pieces[i][j] = null
 	if destroyed == true:
 		get_parent().get_node("collapse_timer").start()
+	current_matched.clear()
 
 func check_concrete(column, row):
 	if column < width - 1:
@@ -343,7 +392,7 @@ func generate_slime():
 	if slime_spaces.size() > 0:
 		var slime_made = false
 		var tracker = 0
-		while !slime_made:# and tracker < 100:
+		while !slime_made: # and tracker < 100:
 			var random_num = floor(randf_range(0, slime_spaces.size()))
 			var current_x = slime_spaces[random_num].x
 			var current_y = slime_spaces[random_num].y
@@ -379,15 +428,15 @@ func find_normal_neighbor(column, row):
 	return null
 
 func _on_destroy_timer_timeout():
-	print("_on_destroy_timer_timeout")
+	#print("_on_destroy_timer_timeout")
 	destroy_matched();
 
 func _on_collapse_timer_timeout():
-	print("_on_collapse_timer_timeout");
+	#print("_on_collapse_timer_timeout")
 	collapse_columns();
 	
 func _on_refill_timer_timeout():
-	print("_on_refill_timer_timeout");
+	#print("_on_refill_timer_timeout")
 	refill_columns();
 
 func _on_lock_holder_remove_lock(place):
@@ -397,6 +446,6 @@ func _on_concrete_holder_remove_concrete(place):
 	remove_from_array(concrete_spaces, place)
 
 func _on_slime_holder_remove_slime(place):
-	print("_on_slime_holder_remove_slime:", place)
+	#print("_on_slime_holder_remove_slime:", place)
 	damaged_slime = true
 	remove_from_array(slime_spaces, place)

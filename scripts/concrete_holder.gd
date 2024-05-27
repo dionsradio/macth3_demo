@@ -25,7 +25,7 @@ func _process(delta):
 	pass
 
 func _on_grid_make_concrete(board_position):
-	print("_on_grid_make_concrete")
+	#print("_on_grid_make_concrete")
 	if concrete_pieces.size() == 0:
 		concrete_pieces = make_2d_array()
 	var current = concrete.instantiate()
@@ -34,7 +34,7 @@ func _on_grid_make_concrete(board_position):
 	concrete_pieces[board_position.x][board_position.y] = current
 \
 func _on_grid_damage_concrete(board_position):
-	print("_on_grid_damage_concrete:",board_position)
+	#print("_on_grid_damage_concrete:",board_position)
 	var concrete_piece = concrete_pieces[board_position.x][board_position.y]
 	if concrete_piece != null:
 		concrete_piece.take_damage(1)

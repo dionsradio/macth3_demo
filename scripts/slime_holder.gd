@@ -25,7 +25,7 @@ func _process(delta):
 	pass
 
 func _on_grid_make_slime(board_position):
-	print("_on_grid_make_slime")
+	#print("_on_grid_make_slime")
 	if slime_pieces.size() == 0:
 		slime_pieces = make_2d_array()
 	var current = slime.instantiate()
@@ -34,7 +34,7 @@ func _on_grid_make_slime(board_position):
 	slime_pieces[board_position.x][board_position.y] = current
 
 func _on_grid_damage_slime(board_position):
-	print("_on_grid_damage_slime:", board_position)
+	#print("_on_grid_damage_slime:", board_position)
 	var slime_piece = slime_pieces[board_position.x][board_position.y]
 	if slime_piece != null:
 		slime_piece.take_damage(1)
