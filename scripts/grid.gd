@@ -31,12 +31,12 @@ signal damage_slime
 
 # piece scenes
 var possible_pieces = [
-	preload ("res://scenes/yellow_piece.tscn"),
-	preload ("res://scenes/green_piece.tscn"),
-	preload ("res://scenes/blue_piece.tscn"),
-	preload ("res://scenes/light_green_piece.tscn"),
-	preload ("res://scenes/pink_piece.tscn"),
-	preload ("res://scenes/orange_piece.tscn"),
+	preload ("res://scenes/pieces/yellow_piece.tscn"),
+	preload ("res://scenes/pieces/green_piece.tscn"),
+	preload ("res://scenes/pieces/blue_piece.tscn"),
+	preload ("res://scenes/pieces/light_green_piece.tscn"),
+	preload ("res://scenes/pieces/pink_piece.tscn"),
+	preload ("res://scenes/pieces/orange_piece.tscn"),
 ];
 
 # generated pieces
@@ -269,9 +269,20 @@ func find_matches():
 								add_to_array(Vector2(i, j + 1), current_matched)
 								matched = true
 	if matched == true:
+		get_bombed_pieces()
 		get_parent().get_node("destroy_timer").start()
 	else:
 		swap_back()
+
+func get_bombed_pieces():
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				if all_pieces[i][j].matched:
+					if all_pieces[i][j].is_column_bomb:
+						match_all_in_column(i)
+					if all_pieces[i][j].is_row_bomb:
+						match_all_in_row(j)
 
 func is_piece_null(column, row):
 	if all_pieces[column][row] == null:
@@ -294,24 +305,40 @@ func find_bombs():
 					matched_col += 1
 				if next_color == curr_color&&next_row == curr_row:
 					matched_row += 1
+		if matched_col == 3&&matched_row == 3:
+			make_bomb(0, curr_color)
+			print("adjacent bomb")
+			return
 		if matched_col == 4:
 			print("column bomb")
+			make_bomb(1, curr_color)
+			return
 		if matched_row == 4:
 			print("row bomb")
-		if matched_col == 3&&matched_row == 3:
-			print("adjacent bomb")
+			make_bomb(2, curr_color)
+			return
 		if matched_col == 5 or matched_row == 5:
 			print("color bomb")
-	pass ;
+			return
 
-func make_columb_bomb():
-	pass ;
-func make_row_bomb():
-	pass ;
-func make_adjacent_bomb():
-	pass ;
-func dim():
-	pass ;
+func make_bomb(bomb_type, color):
+	for i in current_matched.size():
+		var curr_col = current_matched[i].x
+		var curr_row = current_matched[i].y
+		if all_pieces[curr_col][curr_row] == piece_one and piece_one.color == color:
+			piece_one.matched = false
+			change_bomb(bomb_type, piece_one)
+		if all_pieces[curr_col][curr_row] == piece_two and piece_two.color == color:
+			piece_two.matched = false
+			change_bomb(bomb_type, piece_two)
+
+func change_bomb(bomb_type, piece):
+	if bomb_type == 0:
+		piece.make_adjacent_bomb()
+	if bomb_type == 1:
+		piece.make_column_bomb()
+	if bomb_type == 2:
+		piece.make_row_bomb()
 
 func match_and_dim(item):
 	item.matched = true
@@ -426,6 +453,16 @@ func find_normal_neighbor(column, row):
 		if !is_piece_null(column, row - 1):
 			return Vector2(column, row - 1)
 	return null
+
+func match_all_in_column(column):
+	for i in height:
+		if all_pieces[column][i] != null:
+			all_pieces[column][i].matched = true
+
+func match_all_in_row(row):
+	for i in width:
+		if all_pieces[i][row] != null:
+			all_pieces[i][row].matched = true
 
 func _on_destroy_timer_timeout():
 	#print("_on_destroy_timer_timeout")

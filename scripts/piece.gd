@@ -1,8 +1,15 @@
 extends Node2D
 
 # export(String) var color;
+@export var color = ""
+@export var row_texture: Texture
+@export var column_texture: Texture
+@export var adjacent_texture: Texture
 
-@export var color = "";
+var is_row_bomb = false
+var is_column_bomb = false
+var is_adjacent_bomb = false
+
 #var move_tween = null;
 var timeout = 0.0;
 var matched = false;
@@ -22,6 +29,21 @@ func move(target):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass ;
+
+func make_column_bomb():
+	is_column_bomb = true
+	$Sprite2D.texture = column_texture
+	$Sprite2D.modulate = Color(1, 1, 1, 1)
+
+func make_row_bomb():
+	is_row_bomb = true
+	$Sprite2D.texture = row_texture
+	$Sprite2D.modulate = Color(1, 1, 1, 1)
+	
+func make_adjacent_bomb():
+	is_adjacent_bomb = true
+	$Sprite2D.texture = adjacent_texture
+	$Sprite2D.modulate = Color(1, 1, 1, 1)
 
 func dim():
 	var sprite = get_node("Sprite2D");
