@@ -32,10 +32,10 @@ func _on_grid_make_ice(board_position):
 	ice_pieces[board_position.x][board_position.y] = current
 
 func _on_grid_damage_ice(board_position):
-	#print("_on_grid_damage_ice:",board_position)
-	var ice_piece = ice_pieces[board_position.x][board_position.y]
-	if ice_piece != null:
-		ice_piece.take_damage(1)
-		if ice_piece.health <= 0:
-			ice_piece.queue_free()
-			ice_pieces[board_position.x][board_position.y] = null
+	if ice_pieces.size() > 0:
+		var ice_piece = ice_pieces[board_position.x][board_position.y]
+		if ice_piece != null:
+			ice_piece.take_damage(1)
+			if ice_piece.health <= 0:
+				ice_piece.queue_free()
+				ice_pieces[board_position.x][board_position.y] = null

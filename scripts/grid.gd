@@ -35,8 +35,8 @@ var possible_pieces = [
 	preload ("res://scenes/pieces/green_piece.tscn"),
 	preload ("res://scenes/pieces/blue_piece.tscn"),
 	preload ("res://scenes/pieces/light_green_piece.tscn"),
-	preload ("res://scenes/pieces/pink_piece.tscn"),
-	preload ("res://scenes/pieces/orange_piece.tscn"),
+	# preload ("res://scenes/pieces/pink_piece.tscn"),
+	# preload ("res://scenes/pieces/orange_piece.tscn"),
 ];
 
 # generated pieces
@@ -307,7 +307,11 @@ func find_bombs():
 					matched_col += 1
 				if next_color == curr_color&&next_row == curr_row:
 					matched_row += 1
-		if matched_col == 3&&matched_row == 3:
+		
+		# TODO: 这里有一些问题。
+		# 总是会先匹配到 row_bomb 或 column_bomb 
+		# 因为在往 current_matched 中添加时，总是先添加一整行或一整列
+		if matched_col >= 3&&matched_row >= 3:
 			make_bomb(0, curr_color)
 			print("adjacent bomb")
 			return
@@ -456,6 +460,7 @@ func find_normal_neighbor(column, row):
 			return Vector2(column, row - 1)
 	return null
 
+# TODO: 下面 3 个方法会造成死循环，如果一个范围内同时出现多种类型的 bomb 时
 func match_all_in_column(column):
 	for i in height:
 		if all_pieces[column][i] != null:
@@ -469,7 +474,7 @@ func match_all_in_row(row):
 	for i in width:
 		if all_pieces[i][row] != null:
 			all_pieces[i][row].matched = true
-			if all_pieces[i][row].is_i_bomb:
+			if all_pieces[i][row].is_column_bomb:
 				match_all_in_column(i)
 			if all_pieces[i][row].is_adjacent_bomb:
 				find_adjacent_pieces(i, row)

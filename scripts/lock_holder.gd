@@ -35,10 +35,11 @@ func _on_grid_make_lock(board_position):
 
 func _on_grid_damage_lock(board_position):
 	#print("_on_grid_damage_lock:",board_position)
-	var lock_piece = lock_pieces[board_position.x][board_position.y]
-	if lock_piece != null:
-		lock_piece.take_damage(1)
-		if lock_piece.health <= 0:
-			lock_piece.queue_free()
-			lock_pieces[board_position.x][board_position.y] = null
-			emit_signal("remove_lock", board_position)
+	if lock_pieces.size() > 0:
+		var lock_piece = lock_pieces[board_position.x][board_position.y]
+		if lock_piece != null:
+			lock_piece.take_damage(1)
+			if lock_piece.health <= 0:
+				lock_piece.queue_free()
+				lock_pieces[board_position.x][board_position.y] = null
+				emit_signal("remove_lock", board_position)
