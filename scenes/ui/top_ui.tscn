@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://dlefwx1hroped"]
+
+[ext_resource type="Texture2D" uid="uid://swgrlufxmqhv" path="res://art/Top UI v 2.png" id="1_uh6da"]
+[ext_resource type="Script" path="res://scripts/top_ui.gd" id="2_57hxq"]
+[ext_resource type="FontFile" uid="uid://cju551ptyrf2o" path="res://fonts/Kenney Blocks.ttf" id="2_j7gle"]
+
+[sub_resource type="FontVariation" id="FontVariation_wnjs7"]
+base_font = ExtResource("2_j7gle")
+
+[sub_resource type="FontVariation" id="FontVariation_ij3ar"]
+base_font = ExtResource("2_j7gle")
+
+[node name="top_ui" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_uh6da")
+script = ExtResource("2_57hxq")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = SubResource("FontVariation_wnjs7")
+theme_override_font_sizes/font_size = 36
+text = "000"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = SubResource("FontVariation_ij3ar")
+theme_override_font_sizes/font_size = 72
+text = "00"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

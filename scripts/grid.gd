@@ -32,11 +32,11 @@ signal damage_slime
 # piece scenes
 var possible_pieces = [
 	preload ("res://scenes/pieces/yellow_piece.tscn"),
-	preload ("res://scenes/pieces/green_piece.tscn"),
+	#preload ("res://scenes/pieces/green_piece.tscn"),
 	preload ("res://scenes/pieces/blue_piece.tscn"),
-	preload ("res://scenes/pieces/light_green_piece.tscn"),
-	# preload ("res://scenes/pieces/pink_piece.tscn"),
-	# preload ("res://scenes/pieces/orange_piece.tscn"),
+	#preload ("res://scenes/pieces/light_green_piece.tscn"),
+	 preload ("res://scenes/pieces/pink_piece.tscn"),
+	 preload ("res://scenes/pieces/orange_piece.tscn"),
 ];
 
 # generated pieces
@@ -53,6 +53,11 @@ var last_direction = Vector2(0, 0)
 var first_touch = Vector2(0, 0);
 var final_touch = Vector2(0, 0);
 var controlling = false;
+
+# Scoring variables
+signal update_score
+@export var piece_value:int
+var streak = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -362,6 +367,7 @@ func destroy_matched():
 					destroyed = true
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
+					emit_signal("update_score", piece_value * streak)
 	if destroyed == true:
 		get_parent().get_node("collapse_timer").start()
 	current_matched.clear()
@@ -393,6 +399,7 @@ func damage_specical(column, row):
 	check_slime(column, row)
 
 func refill_columns():
+	streak += 1
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] == null&&!restricted_fill(Vector2(i, j)):
@@ -419,6 +426,7 @@ func after_refill():
 	if !damaged_slime:
 		generate_slime()
 	state = move
+	streak = 1
 	damaged_slime = false
 
 func generate_slime():
