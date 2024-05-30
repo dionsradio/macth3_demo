@@ -5,10 +5,12 @@ extends Node2D
 @export var row_texture: Texture
 @export var column_texture: Texture
 @export var adjacent_texture: Texture
+@export var color_texture: Texture
 
 var is_row_bomb = false
 var is_column_bomb = false
 var is_adjacent_bomb = false
+var is_color_bomb = false
 
 #var move_tween = null;
 var timeout = 0.0;
@@ -44,6 +46,12 @@ func make_adjacent_bomb():
 	is_adjacent_bomb = true
 	$Sprite2D.texture = adjacent_texture
 	$Sprite2D.modulate = Color(1, 1, 1, 1)
+	
+func make_color_bomb():
+	is_color_bomb = true
+	$Sprite2D.texture = color_texture
+	$Sprite2D.modulate = Color(1,1,1,1)
+	color = "Color"
 
 func dim():
 	var sprite = get_node("Sprite2D");

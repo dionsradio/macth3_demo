@@ -56,7 +56,7 @@ var controlling = false;
 
 # Scoring variables
 signal update_score
-@export var piece_value:int
+@export var piece_value: int
 var streak = 1
 
 # Called when the node enters the scene tree for the first time.
@@ -69,7 +69,13 @@ func _ready():
 	spawn_locks()
 	spawn_concrete()
 	spawn_slime()
-	pass # Replace with function body.
+	_debug_make_random_color_bomb()
+
+func _debug_make_random_color_bomb():
+	var _col = floor(randf_range(0, width))
+	var _row = floor(randf_range(0, height))
+	print("col:", _col, ", row:", _row)
+	all_pieces[_col][_row].make_color_bomb()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -195,6 +201,21 @@ func swap_pieces(column, row, direction, _find_matched=true):
 
 	if first_piece != null&&other_piece != null:
 		if !restricted_move(Vector2(column, row))&&!restricted_move(Vector2(column, row) + direction):
+			if is_color_bomb(first_piece, other_piece):
+				if first_piece.color != "Color":
+					#other_piece.matched = true
+					match_and_dim(other_piece)
+					add_to_array(Vector2(column, row), current_matched)
+					match_color(first_piece.color)
+				elif other_piece.color != "Color":
+					#first_piece.matched = true
+					match_and_dim(first_piece)
+					add_to_array(Vector2(column + direction.x, row + direction.y), current_matched)
+					match_color(other_piece.color)
+				else:
+					first_piece.matched = true
+					other_piece.matched = true
+					clear_board()
 			store_info(first_piece, other_piece, Vector2(column, row), direction)
 			state = wait
 			all_pieces[column][row] = other_piece
@@ -205,6 +226,11 @@ func swap_pieces(column, row, direction, _find_matched=true):
 				find_matches()
 			else:
 				state = move;
+
+func is_color_bomb(p1, p2):
+	if p1.color == "Color" or p2.color == "Color":
+		return true
+	return false
 
 func store_info(last_piece, other_piece, place, direction):
 	piece_one = last_piece;
@@ -248,7 +274,6 @@ func touch_difference(grid_1, grid_2):
 	pass ;
 
 func find_matches():
-	var matched = false;
 	for i in width:
 		for j in height:
 			if !is_piece_null(i, j):
@@ -262,7 +287,6 @@ func find_matches():
 								add_to_array(Vector2(i, j), current_matched)
 								add_to_array(Vector2(i - 1, j), current_matched)
 								add_to_array(Vector2(i + 1, j), current_matched)
-								matched = true
 				if j > 0&&j < height - 1:
 					if !is_piece_null(i, j - 1)&&!is_piece_null(i, j + 1):
 							if all_pieces[i][j - 1].color == current_color&&all_pieces[i][j + 1].color == current_color:
@@ -272,8 +296,7 @@ func find_matches():
 								add_to_array(Vector2(i, j), current_matched)
 								add_to_array(Vector2(i, j - 1), current_matched)
 								add_to_array(Vector2(i, j + 1), current_matched)
-								matched = true
-	if matched == true:
+	if current_matched.size() > 0:
 		get_bombed_pieces()
 		get_parent().get_node("destroy_timer").start()
 	else:
@@ -330,6 +353,7 @@ func find_bombs():
 			return
 		if matched_col == 5 or matched_row == 5:
 			print("color bomb")
+			make_bomb(3, curr_color)
 			return
 
 func make_bomb(bomb_type, color):
@@ -350,6 +374,8 @@ func change_bomb(bomb_type, piece):
 		piece.make_column_bomb()
 	if bomb_type == 2:
 		piece.make_row_bomb()
+	if bomb_type == 3:
+		piece.make_color_bomb()
 
 func match_and_dim(item):
 	item.matched = true
@@ -363,6 +389,8 @@ func destroy_matched():
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
+					if all_pieces[i][j].color =="Color":
+						print("Color Bomb")
 					damage_specical(i, j)
 					destroyed = true
 					all_pieces[i][j].queue_free()
@@ -397,6 +425,23 @@ func damage_specical(column, row):
 	emit_signal("damage_lock", Vector2(column, row))
 	check_concrete(column, row)
 	check_slime(column, row)
+
+func match_color(color):
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				if all_pieces[i][j].color == color:
+					#all_pieces[i][j].match_and_dim()
+					match_and_dim(all_pieces[i][j])
+					add_to_array(Vector2(i, j), current_matched)
+
+func clear_board():
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				#all_pieces[i][j].match_and_dim()
+				match_and_dim(all_pieces[i][j])
+				add_to_array(Vector2(i, j), current_matched)
 
 func refill_columns():
 	streak += 1
