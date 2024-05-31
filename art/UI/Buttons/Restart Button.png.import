@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://but8fxtxygqiy"
-path="res://.godot/imported/Bottom UI v 2.png-09965c89ef720ea8f794c71283cb9606.ctex"
+uid="uid://cnytx8v8pkp4a"
+path="res://.godot/imported/Restart Button.png-9fffdd97d4f36ea6d199c1ccb8bf6693.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Bottom UI v 2.png"
-dest_files=["res://.godot/imported/Bottom UI v 2.png-09965c89ef720ea8f794c71283cb9606.ctex"]
+source_file="res://art/UI/Buttons/Restart Button.png"
+dest_files=["res://.godot/imported/Restart Button.png-9fffdd97d4f36ea6d199c1ccb8bf6693.ctex"]
 
 [params]
 

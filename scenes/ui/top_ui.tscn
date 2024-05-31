@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://dlefwx1hroped"]
+[gd_scene load_steps=5 format=3 uid="uid://dlefwx1hroped"]
 
-[ext_resource type="Texture2D" uid="uid://swgrlufxmqhv" path="res://art/Top UI v 2.png" id="1_uh6da"]
 [ext_resource type="Script" path="res://scripts/top_ui.gd" id="2_57hxq"]
 [ext_resource type="FontFile" uid="uid://cju551ptyrf2o" path="res://fonts/Kenney Blocks.ttf" id="2_j7gle"]
 
@@ -13,7 +12,6 @@ base_font = ExtResource("2_j7gle")
 [node name="top_ui" type="TextureRect"]
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("1_uh6da")
 script = ExtResource("2_57hxq")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://swgrlufxmqhv"
-path="res://.godot/imported/Top UI v 2.png-b248c7f67e91550953d4e9d9fb791c53.ctex"
+uid="uid://dotjon3is8dfr"
+path="res://.godot/imported/Level Select 2.png-0545c3c6def6f85707aa42c9976d55f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Top UI v 2.png"
-dest_files=["res://.godot/imported/Top UI v 2.png-b248c7f67e91550953d4e9d9fb791c53.ctex"]
+source_file="res://art/UI/Level Select/Level Select 2.png"
+dest_files=["res://.godot/imported/Level Select 2.png-0545c3c6def6f85707aa42c9976d55f4.ctex"]
 
 [params]
 

@@ -32,7 +32,7 @@ signal damage_slime
 # piece scenes
 var possible_pieces = [
 	preload ("res://scenes/pieces/yellow_piece.tscn"),
-	#preload ("res://scenes/pieces/green_piece.tscn"),
+	preload ("res://scenes/pieces/green_piece.tscn"),
 	preload ("res://scenes/pieces/blue_piece.tscn"),
 	#preload ("res://scenes/pieces/light_green_piece.tscn"),
 	 preload ("res://scenes/pieces/pink_piece.tscn"),
@@ -69,13 +69,29 @@ func _ready():
 	spawn_locks()
 	spawn_concrete()
 	spawn_slime()
-	_debug_make_random_color_bomb()
+
+	# _debug_make_color_bomb(5, 3)
+	# _debug_make_row_bomb(3, 3)
+	# _debug_make_row_bomb(4, 3)
+	# _debug_make_column_bomb(4, 4)
+	# _debug_make_column_bomb(4, 5)
+
+func _debug_make_column_bomb(_col, _row):
+	if all_pieces[_col][_row] != null:
+		all_pieces[_col][_row].make_column_bomb()
+	
+func _debug_make_row_bomb(_col, _row):
+	if all_pieces[_col][_row] != null:
+		all_pieces[_col][_row].make_row_bomb()
+func _debug_make_color_bomb(_col, _row):
+	if all_pieces[_col][_row] != null:
+		all_pieces[_col][_row].make_color_bomb()
 
 func _debug_make_random_color_bomb():
 	var _col = floor(randf_range(0, width))
 	var _row = floor(randf_range(0, height))
 	print("col:", _col, ", row:", _row)
-	all_pieces[_col][_row].make_color_bomb()
+	_debug_make_color_bomb(_col, _row)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -389,7 +405,7 @@ func destroy_matched():
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
-					if all_pieces[i][j].color =="Color":
+					if all_pieces[i][j].color == "Color":
 						print("Color Bomb")
 					damage_specical(i, j)
 					destroyed = true

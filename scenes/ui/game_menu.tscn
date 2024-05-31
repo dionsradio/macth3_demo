@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqncg5fbbhw1j"]
+
+[ext_resource type="PackedScene" uid="uid://bwmlsur74hfbx" path="res://scenes/ui/main.tscn" id="1_1p1j4"]
+[ext_resource type="PackedScene" uid="uid://nll06uvdfs2m" path="res://scenes/ui/settings.tscn" id="2_l8qcr"]
+
+[node name="Game Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Main" parent="." instance=ExtResource("1_1p1j4")]
+
+[node name="Settings" parent="." instance=ExtResource("2_l8qcr")]

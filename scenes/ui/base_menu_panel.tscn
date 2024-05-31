@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjchjfu3mlgft"]
+
+[sub_resource type="Animation" id="Animation_7k7gr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0ok8q"]
+resource_name = "slide_in"
+step = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3qfc8"]
+_data = {
+"RESET": SubResource("Animation_7k7gr"),
+"slide_in": SubResource("Animation_0ok8q")
+}
+
+[node name="BaseMenuPanel" type="CanvasLayer"]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Graphic and Buttons" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Graphic" type="TextureRect" parent="MarginContainer/Graphic and Buttons"]
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="MarginContainer/Graphic and Buttons"]
+layout_mode = 2
+
+[node name="Button 1" type="TextureButton" parent="MarginContainer/Graphic and Buttons/Buttons"]
+layout_mode = 2
+
+[node name="Button 2" type="TextureButton" parent="MarginContainer/Graphic and Buttons/Buttons"]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer"]
+libraries = {
+"": SubResource("AnimationLibrary_3qfc8")
+}
