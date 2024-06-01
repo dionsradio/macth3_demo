@@ -59,8 +59,14 @@ signal update_score
 @export var piece_value: int
 var streak = 1
 
+# Counter
+signal update_counter
+@export var current_counter_value:int
+@export var is_moves:bool
+
 # Effects
-var particle_effect = preload("res://scenes/particles/DestroyParticle.tscn")
+var particle_effect = preload("res://scenes/particles/ParticleEffect.tscn")
+var animated_effect = preload("res://scenes/particles/AnimatedExplosion.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -72,6 +78,9 @@ func _ready():
 	spawn_locks()
 	spawn_concrete()
 	spawn_slime()
+	emit_signal("update_counter", current_counter_value)
+	if !is_moves:
+		$Timer.start();
 
 	# _debug_make_color_bomb(5, 3)
 	# _debug_make_row_bomb(3, 3)
@@ -415,6 +424,7 @@ func destroy_matched():
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
 					make_effect(particle_effect, i, j)
+					make_effect(animated_effect, i, j)
 					emit_signal("update_score", piece_value * streak)
 	if destroyed == true:
 		get_parent().get_node("collapse_timer").start()
@@ -499,6 +509,10 @@ func after_refill():
 	state = move
 	streak = 1
 	damaged_slime = false
+	current_counter_value -= 1
+	emit_signal("update_counter")
+	if current_counter_value == 0:
+		declare_game_over()
 
 func generate_slime():
 	if slime_spaces.size() > 0:
@@ -591,3 +605,14 @@ func _on_slime_holder_remove_slime(place):
 	#print("_on_slime_holder_remove_slime:", place)
 	damaged_slime = true
 	remove_from_array(slime_spaces, place)
+
+func _on_timer_timeout():
+	current_counter_value -= 1
+	emit_signal("update_counter")
+	if current_counter_value == 0:
+		declare_game_over()
+		$Timer.stop()
+
+func declare_game_over():
+	print("Game Over!")
+	state = wait

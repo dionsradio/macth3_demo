@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://dtgmawifiurvo"]
+
+[ext_resource type="Script" path="res://scripts/animated_explosion.gd" id="1_3bu8s"]
+[ext_resource type="Texture2D" uid="uid://s86axe0wambp" path="res://art/Particles/Explosion V2/explode_1_1.png" id="2_k1ryw"]
+[ext_resource type="Texture2D" uid="uid://c0kxywqigx2ff" path="res://art/Particles/Explosion V2/explode_2_1.png" id="3_qrcmd"]
+[ext_resource type="Texture2D" uid="uid://bkwu45dteussj" path="res://art/Particles/Explosion V2/explode_3_1.png" id="4_f5n62"]
+[ext_resource type="Texture2D" uid="uid://djrhkyrw8lvqb" path="res://art/Particles/Explosion V2/explode_4_1.png" id="5_hygk7"]
+[ext_resource type="Texture2D" uid="uid://bhq7daouyfwps" path="res://art/Particles/Explosion V2/explode_5_1.png" id="6_j7v4f"]
+[ext_resource type="Texture2D" uid="uid://bpuxbkgetv530" path="res://art/Particles/Explosion V2/explode_6_1.png" id="7_xscj1"]
+[ext_resource type="Texture2D" uid="uid://bmayhrtudanac" path="res://art/Particles/Explosion V2/explode_7.png" id="8_rrmd6"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_klsyd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_k1ryw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_qrcmd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f5n62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hygk7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_j7v4f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_j7v4f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xscj1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xscj1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_rrmd6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_rrmd6")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 12.0
+}]
+
+[node name="AnimatedExplosion" type="Node2D"]
+scale = Vector2(0.75, 0.75)
+script = ExtResource("1_3bu8s")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_klsyd")
+animation = &"explode"
+frame = 9
+frame_progress = 1.0
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

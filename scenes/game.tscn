@@ -35,6 +35,10 @@ y_start = 800
 offset = 64
 y_offset = 5
 piece_value = 10
+current_counter_value = 5
+is_moves = true
+
+[node name="Timer" type="Timer" parent="grid"]
 
 [node name="destroy_timer" type="Timer" parent="."]
 one_shot = true
@@ -65,7 +69,9 @@ script = ExtResource("8_e7x1c")
 [connection signal="make_ice" from="grid" to="ice_holder" method="_on_grid_make_ice"]
 [connection signal="make_lock" from="grid" to="lock_holder" method="_on_grid_make_lock"]
 [connection signal="make_slime" from="grid" to="slime_holder" method="_on_grid_make_slime"]
+[connection signal="update_counter" from="grid" to="top_ui" method="_on_grid_update_counter"]
 [connection signal="update_score" from="grid" to="top_ui" method="_on_grid_update_score"]
+[connection signal="timeout" from="grid/Timer" to="grid" method="_on_timer_timeout"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
