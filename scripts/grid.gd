@@ -59,6 +59,9 @@ signal update_score
 @export var piece_value: int
 var streak = 1
 
+# Effects
+var particle_effect = preload("res://scenes/particles/DestroyParticle.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	state = move
@@ -411,10 +414,17 @@ func destroy_matched():
 					destroyed = true
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
+					make_effect(particle_effect, i, j)
 					emit_signal("update_score", piece_value * streak)
 	if destroyed == true:
 		get_parent().get_node("collapse_timer").start()
 	current_matched.clear()
+
+func make_effect(effect, column, row):
+	var current = effect.instantiate()
+	current.position = grid_to_pixel(column, row)
+	add_child(current)
+	pass
 
 func check_concrete(column, row):
 	if column < width - 1:

@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjchjfu3mlgft"]
+[gd_scene load_steps=5 format=3 uid="uid://cjchjfu3mlgft"]
+
+[ext_resource type="Script" path="res://scripts/base_menu_panel.gd" id="1_sigvt"]
 
 [sub_resource type="Animation" id="Animation_7k7gr"]
-length = 0.001
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -9,14 +11,15 @@ tracks/0/path = NodePath("..:offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 0)]
+"values": [Vector2(576, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_0ok8q"]
 resource_name = "slide_in"
+length = 0.4
 step = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -25,10 +28,10 @@ tracks/0/path = NodePath("..:offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 0)]
+"values": [Vector2(576, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3qfc8"]
@@ -38,6 +41,9 @@ _data = {
 }
 
 [node name="BaseMenuPanel" type="CanvasLayer"]
+offset = Vector2(576, 0)
+transform = Transform2D(1, 0, 0, 1, 576, 0)
+script = ExtResource("1_sigvt")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -65,7 +71,8 @@ layout_mode = 2
 [node name="Button 2" type="TextureButton" parent="MarginContainer/Graphic and Buttons/Buttons"]
 layout_mode = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../MarginContainer")
 libraries = {
 "": SubResource("AnimationLibrary_3qfc8")
 }

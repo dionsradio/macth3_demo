@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://c0bw2ycse70fy"]
+
+[ext_resource type="Texture2D" uid="uid://cd4x3fsl81kbq" path="res://art/Particles/Star Particle.png" id="1_gemaf"]
+[ext_resource type="Script" path="res://scripts/destroy_particle.gd" id="2_dtl7w"]
+
+[sub_resource type="Gradient" id="Gradient_ylxrh"]
+offsets = PackedFloat32Array(0, 0, 0, 0, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.576471, 0.184314, 0.223529, 1, 0.360784, 0.439216, 0.92549, 1, 0.72549, 0.368627, 0.172549, 1, 0.964706, 0.94902, 0.992157, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bdfe6"]
+gradient = SubResource("Gradient_ylxrh")
+
+[sub_resource type="Curve" id="Curve_7smkv"]
+_data = [Vector2(0.04, 0.0421052), 0.0, 0.336842, 0, 0, Vector2(0.35, 0.994737), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rjych"]
+curve = SubResource("Curve_7smkv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5yrvv"]
+emission_shape = 3
+emission_box_extents = Vector3(16, 16, 1)
+spread = 180.0
+initial_velocity_min = 25.0
+initial_velocity_max = 42.0
+gravity = Vector3(0, 50, 0)
+scale_curve = SubResource("CurveTexture_rjych")
+color_ramp = SubResource("GradientTexture1D_bdfe6")
+
+[node name="ParticleEffect" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+process_material = SubResource("ParticleProcessMaterial_5yrvv")
+texture = ExtResource("1_gemaf")
+script = ExtResource("2_dtl7w")
+
+[node name="Timer" type="Timer" parent="GPUParticles2D"]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="GPUParticles2D/Timer" to="GPUParticles2D" method="_on_timer_timeout"]
