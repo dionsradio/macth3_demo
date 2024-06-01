@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bb36smvbrxns7"]
+[gd_scene load_steps=11 format=3 uid="uid://bb36smvbrxns7"]
 
 [ext_resource type="Texture2D" uid="uid://kxs3opd7ij4i" path="res://art/UI/Backgrounds/background 2.png" id="1_is670"]
 [ext_resource type="PackedScene" uid="uid://dlefwx1hroped" path="res://scenes/ui/top_ui.tscn" id="2_0021a"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/concrete_holder.gd" id="6_5ykwp"]
 [ext_resource type="Script" path="res://scripts/lock_holder.gd" id="6_vgu5m"]
 [ext_resource type="Script" path="res://scripts/slime_holder.gd" id="8_e7x1c"]
+[ext_resource type="PackedScene" uid="uid://cv3s2keethsf" path="res://scenes/ui/GameOverPanel.tscn" id="10_1dfrd"]
 
 [node name="game_window" type="Node2D"]
 
@@ -35,7 +36,7 @@ y_start = 800
 offset = 64
 y_offset = 5
 piece_value = 10
-current_counter_value = 5
+current_counter_value = 2
 is_moves = true
 
 [node name="Timer" type="Timer" parent="grid"]
@@ -61,10 +62,13 @@ script = ExtResource("6_vgu5m")
 [node name="slime_holder" type="Node2D" parent="."]
 script = ExtResource("8_e7x1c")
 
+[node name="GameOverPanel" parent="." instance=ExtResource("10_1dfrd")]
+
 [connection signal="damage_concrete" from="grid" to="concrete_holder" method="_on_grid_damage_concrete"]
 [connection signal="damage_ice" from="grid" to="ice_holder" method="_on_grid_damage_ice"]
 [connection signal="damage_lock" from="grid" to="lock_holder" method="_on_grid_damage_lock"]
 [connection signal="damage_slime" from="grid" to="slime_holder" method="_on_grid_damage_slime"]
+[connection signal="game_over" from="grid" to="GameOverPanel" method="_on_grid_game_over"]
 [connection signal="make_concrete" from="grid" to="concrete_holder" method="_on_grid_make_concrete"]
 [connection signal="make_ice" from="grid" to="ice_holder" method="_on_grid_make_ice"]
 [connection signal="make_lock" from="grid" to="lock_holder" method="_on_grid_make_lock"]

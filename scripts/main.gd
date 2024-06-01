@@ -1,4 +1,4 @@
-extends "res://scripts//base_menu_panel.gd"
+extends "res://scripts/base_menu_panel.gd"
 
 signal play_pressed
 signal settings_pressed

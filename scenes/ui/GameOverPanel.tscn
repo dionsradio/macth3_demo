@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3 uid="uid://cv3s2keethsf"]
+
+[ext_resource type="Texture2D" uid="uid://bht5a17sykjpp" path="res://art/UI/Panels/GameOver Background.png" id="1_52k0y"]
+[ext_resource type="Script" path="res://scripts/game_over_panel.gd" id="1_demk0"]
+[ext_resource type="Texture2D" uid="uid://cslest2h22yhp" path="res://art/UI/Buttons/Quit Button.png" id="2_ao3sv"]
+[ext_resource type="Texture2D" uid="uid://cnytx8v8pkp4a" path="res://art/UI/Buttons/Restart Button.png" id="3_h0yw1"]
+[ext_resource type="Animation" uid="uid://cbxwddcutwh4x" path="res://animations/slide_in.res" id="4_unycl"]
+
+[sub_resource type="Animation" id="Animation_7u3h0"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(576, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_clhik"]
+_data = {
+"RESET": SubResource("Animation_7u3h0"),
+"slide_in": ExtResource("4_unycl")
+}
+
+[node name="GameOverPanel" type="CanvasLayer"]
+offset = Vector2(576, 0)
+transform = Transform2D(1, 0, 0, 1, 576, 0)
+script = ExtResource("1_demk0")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 384
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 128
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_52k0y")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 256
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextureRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Quit Button" type="TextureButton" parent="MarginContainer/TextureRect/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("2_ao3sv")
+
+[node name="Restart Button" type="TextureButton" parent="MarginContainer/TextureRect/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_h0yw1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_clhik")
+}
+
+[connection signal="pressed" from="MarginContainer/TextureRect/MarginContainer/HBoxContainer/Quit Button" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/MarginContainer/HBoxContainer/Restart Button" to="." method="_on_restart_button_pressed"]

@@ -6,8 +6,6 @@ func _ready():
 	#Main Menu Panel active
 	$Main.slide_in()
 
-
-
 func _on_main_play_pressed():
 	get_tree().change_scene_to_file("res://scenes/levels/level_1.tscn")
 	pass # Replace with function body.

@@ -63,6 +63,7 @@ var streak = 1
 signal update_counter
 @export var current_counter_value:int
 @export var is_moves:bool
+signal game_over
 
 # Effects
 var particle_effect = preload("res://scenes/particles/ParticleEffect.tscn")
@@ -614,5 +615,5 @@ func _on_timer_timeout():
 		$Timer.stop()
 
 func declare_game_over():
-	print("Game Over!")
+	emit_signal("game_over")
 	state = wait
