@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bb36smvbrxns7"]
+[gd_scene load_steps=12 format=3 uid="uid://bb36smvbrxns7"]
 
 [ext_resource type="Texture2D" uid="uid://kxs3opd7ij4i" path="res://art/UI/Backgrounds/background 2.png" id="1_is670"]
 [ext_resource type="PackedScene" uid="uid://dlefwx1hroped" path="res://scenes/ui/top_ui.tscn" id="2_0021a"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b64w20cle830q" path="res://art/UI/Bottom UI v 2.png" id="4_wodel"]
 [ext_resource type="Script" path="res://scripts/ice_holder.gd" id="5_j5gfv"]
 [ext_resource type="Script" path="res://scripts/concrete_holder.gd" id="6_5ykwp"]
+[ext_resource type="PackedScene" uid="uid://dn0885d5p8ix4" path="res://scenes/sinkers/sinker.tscn" id="6_dbhq1"]
 [ext_resource type="Script" path="res://scripts/lock_holder.gd" id="6_vgu5m"]
 [ext_resource type="Script" path="res://scripts/slime_holder.gd" id="8_e7x1c"]
 [ext_resource type="PackedScene" uid="uid://cv3s2keethsf" path="res://scenes/ui/GameOverPanel.tscn" id="10_1dfrd"]
@@ -38,6 +39,9 @@ y_offset = 5
 piece_value = 10
 current_counter_value = 2
 is_moves = true
+sinker_piece = ExtResource("6_dbhq1")
+sinkers_in_scene = true
+max_sinkers = 8
 
 [node name="Timer" type="Timer" parent="grid"]
 

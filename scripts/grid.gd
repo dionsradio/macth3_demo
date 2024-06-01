@@ -61,19 +61,27 @@ var streak = 1
 
 # Counter
 signal update_counter
-@export var current_counter_value:int
-@export var is_moves:bool
+@export var current_counter_value: int
+@export var is_moves: bool
 signal game_over
 
+# Collectible/Sinker Stuff
+@export var sinker_piece: PackedScene
+@export var sinkers_in_scene: bool
+@export var max_sinkers: int
+var current_sinkers = 0
+
 # Effects
-var particle_effect = preload("res://scenes/particles/ParticleEffect.tscn")
-var animated_effect = preload("res://scenes/particles/AnimatedExplosion.tscn")
+var particle_effect = preload ("res://scenes/particles/ParticleEffect.tscn")
+var animated_effect = preload ("res://scenes/particles/AnimatedExplosion.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	state = move
 	randomize()
 	all_pieces = make_2d_array()
+	if sinkers_in_scene:
+		spawn_sinkers(max_sinkers)
 	spawn_pieces()
 	spawn_ice()
 	spawn_locks()
@@ -83,11 +91,11 @@ func _ready():
 	if !is_moves:
 		$Timer.start();
 
-	# _debug_make_color_bomb(5, 3)
-	# _debug_make_row_bomb(3, 3)
-	# _debug_make_row_bomb(4, 3)
-	# _debug_make_column_bomb(4, 4)
-	# _debug_make_column_bomb(4, 5)
+	 #_debug_make_color_bomb(5, 3)
+	 #_debug_make_row_bomb(3, 3)
+	_debug_make_row_bomb(4, 3)
+	 #_debug_make_column_bomb(4, 4)
+	_debug_make_column_bomb(4, 5)
 
 func _debug_make_column_bomb(_col, _row):
 	if all_pieces[_col][_row] != null:
@@ -158,7 +166,7 @@ func remove_from_array(array, item):
 func spawn_pieces():
 	for i in width:
 		for j in height:
-			if !restricted_fill(Vector2(i, j)):
+			if !restricted_fill(Vector2(i, j)) and all_pieces[i][j] == null:
 				# choose a random number and store it
 				var rand = floor(randf_range(0, possible_pieces.size()));
 				var piece = possible_pieces[rand].instantiate(); # instance() func is no longer used;
@@ -184,6 +192,24 @@ func spawn_concrete():
 func spawn_slime():
 	for i in slime_spaces.size():
 		emit_signal("make_slime", slime_spaces[i])
+
+func spawn_sinkers(number_to_spawn):
+	for i in number_to_spawn:
+		var column = floor(randf_range(0, width))
+		while all_pieces[column][height - 1] != null or restricted_fill(Vector2(column, height - 1)):
+			column = floor(randf_range(0, width))
+		var current = sinker_piece.instantiate()
+		add_child(current)
+		current.position = grid_to_pixel(column, height - 1)
+		all_pieces[column][height - 1] = current
+		current_sinkers += 1
+	pass
+
+func is_piece_sinker(column, row):
+	if all_pieces[column][row] != null:
+		if all_pieces[column][row].color == "Sinker":
+			return true
+	return false
 
 # check match at specific location
 func match_at(column, row, color):
@@ -287,6 +313,7 @@ func collapse_columns():
 						break
 	# if collapsed == true:
 		get_parent().get_node("refill_timer").start();
+	destroy_sinkers()
 
 func touch_difference(grid_1, grid_2):
 	var difference = grid_2 - grid_1;
@@ -305,7 +332,7 @@ func touch_difference(grid_1, grid_2):
 func find_matches():
 	for i in width:
 		for j in height:
-			if !is_piece_null(i, j):
+			if !is_piece_null(i, j) and !is_piece_sinker(i, j):
 				var current_color = all_pieces[i][j].color
 				if i > 0&&i < width - 1:
 					if !is_piece_null(i - 1, j)&&!is_piece_null(i + 1, j):
@@ -463,10 +490,15 @@ func damage_specical(column, row):
 	check_concrete(column, row)
 	check_slime(column, row)
 
+func is_piece_can_be_destroyed(column, row):
+	if is_piece_sinker(column, row):
+		return false
+	return true
+
 func match_color(color):
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] != null:
+			if !is_piece_null(i, j) and is_piece_can_be_destroyed(i, j):
 				if all_pieces[i][j].color == color:
 					#all_pieces[i][j].match_and_dim()
 					match_and_dim(all_pieces[i][j])
@@ -475,12 +507,14 @@ func match_color(color):
 func clear_board():
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] != null:
+			if !is_piece_null(i, j) and is_piece_can_be_destroyed(i, j):
 				#all_pieces[i][j].match_and_dim()
 				match_and_dim(all_pieces[i][j])
 				add_to_array(Vector2(i, j), current_matched)
 
 func refill_columns():
+	if current_sinkers < max_sinkers:
+		spawn_sinkers(max_sinkers - current_sinkers)
 	streak += 1
 	for i in width:
 		for j in height:
@@ -501,7 +535,7 @@ func after_refill():
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
-				if match_at(i, j, all_pieces[i][j].color):
+				if match_at(i, j, all_pieces[i][j].color) or all_pieces[i][j].matched:
 					find_matches();
 					get_parent().get_node("destroy_timer").start()
 					return
@@ -538,26 +572,26 @@ func generate_slime():
 func find_normal_neighbor(column, row):
 	# find right
 	if is_in_grid(Vector2(column + 1, row)):
-		if !is_piece_null(column + 1, row):
+		if !is_piece_null(column + 1, row) and is_piece_can_be_destroyed(column + 1, row):
 			return Vector2(column + 1, row)
 	# find left
 	if is_in_grid(Vector2(column - 1, row)):
-		if !is_piece_null(column - 1, row):
+		if !is_piece_null(column - 1, row) and is_piece_can_be_destroyed(column - 1, row):
 			return Vector2(column - 1, row)
 	# find above
 	if is_in_grid(Vector2(column, row + 1)):
-		if !is_piece_null(column, row + 1):
+		if !is_piece_null(column, row + 1) and is_piece_can_be_destroyed(column, row + 1):
 			return Vector2(column, row + 1)
 	# find bellow
 	if is_in_grid(Vector2(column, row - 1)):
-		if !is_piece_null(column, row - 1):
+		if !is_piece_null(column, row - 1) and is_piece_can_be_destroyed(column, row - 1):
 			return Vector2(column, row - 1)
 	return null
 
 # TODO: 下面 3 个方法会造成死循环，如果一个范围内同时出现多种类型的 bomb 时
 func match_all_in_column(column):
 	for i in height:
-		if all_pieces[column][i] != null:
+		if all_pieces[column][i] != null and is_piece_can_be_destroyed(column, i):
 			all_pieces[column][i].matched = true
 			if all_pieces[column][i].is_row_bomb:
 				match_all_in_row(i)
@@ -566,7 +600,7 @@ func match_all_in_column(column):
 
 func match_all_in_row(row):
 	for i in width:
-		if all_pieces[i][row] != null:
+		if all_pieces[i][row] != null and is_piece_can_be_destroyed(i, row):
 			all_pieces[i][row].matched = true
 			if all_pieces[i][row].is_column_bomb:
 				match_all_in_column(i)
@@ -577,12 +611,20 @@ func find_adjacent_pieces(column, row):
 	for i in range( - 1, 2):
 		for j in range( - 1, 2):
 			if is_in_grid(Vector2(column + i, row + j)):
-				if all_pieces[column + i][row + j] != null:
+				if all_pieces[column + i][row + j] != null and is_piece_can_be_destroyed(column + i, row + j):
 					all_pieces[column + i][row + j].matched = true;
 				if all_pieces[column + i][row + j].is_column_bomb:
 					match_all_in_column(column + i)
 				if all_pieces[column + i][row + j].is_row_bomb:
 					match_all_in_row(row + j)
+
+func destroy_sinkers():
+	for i in width:
+		if all_pieces[i][0] != null:
+			if is_piece_sinker(i, 0):
+				all_pieces[i][0].matched = true
+				add_to_array(Vector2(i,0), current_matched)
+				current_sinkers -= 1
 
 func _on_destroy_timer_timeout():
 	#print("_on_destroy_timer_timeout")
