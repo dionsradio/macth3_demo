@@ -32,6 +32,9 @@ signal damage_slime
 @export var max_score:int
 signal setup_max_score
 
+# Goal check stuff
+signal check_goal
+
 # piece scenes
 var possible_pieces = [
 	preload ("res://scenes/pieces/yellow_piece.tscn"),
@@ -451,6 +454,7 @@ func destroy_matched():
 				if all_pieces[i][j].matched:
 					if all_pieces[i][j].color == "Color":
 						print("Color Bomb")
+					emit_signal("check_goal", all_pieces[i][j].color)
 					damage_specical(i, j)
 					destroyed = true
 					all_pieces[i][j].queue_free()

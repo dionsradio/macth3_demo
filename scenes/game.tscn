@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bb36smvbrxns7"]
+[gd_scene load_steps=13 format=3 uid="uid://bb36smvbrxns7"]
 
 [ext_resource type="Texture2D" uid="uid://kxs3opd7ij4i" path="res://art/UI/Backgrounds/background 2.png" id="1_is670"]
 [ext_resource type="PackedScene" uid="uid://dlefwx1hroped" path="res://scenes/ui/top_ui.tscn" id="2_0021a"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" path="res://scripts/lock_holder.gd" id="6_vgu5m"]
 [ext_resource type="Script" path="res://scripts/slime_holder.gd" id="8_e7x1c"]
 [ext_resource type="PackedScene" uid="uid://cv3s2keethsf" path="res://scenes/ui/GameOverPanel.tscn" id="10_1dfrd"]
+[ext_resource type="Script" path="res://scripts/GoalHolder.gd" id="11_mg1bo"]
+[ext_resource type="PackedScene" uid="uid://cpg2yuk283bex" path="res://scenes/goal.tscn" id="12_uk0bn"]
 
 [node name="game_window" type="Node2D"]
 
@@ -67,6 +69,22 @@ script = ExtResource("8_e7x1c")
 
 [node name="GameOverPanel" parent="." instance=ExtResource("10_1dfrd")]
 
+[node name="GoalHolder" type="Node" parent="."]
+script = ExtResource("11_mg1bo")
+
+[node name="Goal" parent="GoalHolder" instance=ExtResource("12_uk0bn")]
+max_needed = 5
+goal_string = "blue"
+
+[node name="Goal2" parent="GoalHolder" instance=ExtResource("12_uk0bn")]
+max_needed = 3
+goal_string = "pink"
+
+[node name="Goal3" parent="GoalHolder" instance=ExtResource("12_uk0bn")]
+max_needed = 10
+goal_string = "white"
+
+[connection signal="check_goal" from="grid" to="GoalHolder" method="_on_grid_check_goal"]
 [connection signal="damage_concrete" from="grid" to="concrete_holder" method="_on_grid_damage_concrete"]
 [connection signal="damage_ice" from="grid" to="ice_holder" method="_on_grid_damage_ice"]
 [connection signal="damage_lock" from="grid" to="lock_holder" method="_on_grid_damage_lock"]
