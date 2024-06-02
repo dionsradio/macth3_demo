@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bb36smvbrxns7"]
+[gd_scene load_steps=11 format=3 uid="uid://bb36smvbrxns7"]
 
 [ext_resource type="Texture2D" uid="uid://kxs3opd7ij4i" path="res://art/UI/Backgrounds/background 2.png" id="1_is670"]
 [ext_resource type="PackedScene" uid="uid://dlefwx1hroped" path="res://scenes/ui/top_ui.tscn" id="2_0021a"]
-[ext_resource type="Texture2D" uid="uid://bqdoddkhgjkua" path="res://art/UI/Top UI v 2.png" id="3_d808j"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="4_e21qk"]
 [ext_resource type="Texture2D" uid="uid://b64w20cle830q" path="res://art/UI/Bottom UI v 2.png" id="4_wodel"]
 [ext_resource type="Script" path="res://scripts/ice_holder.gd" id="5_j5gfv"]
@@ -20,7 +19,6 @@ offset_bottom = 40.0
 texture = ExtResource("1_is670")
 
 [node name="top_ui" parent="." instance=ExtResource("2_0021a")]
-texture = ExtResource("3_d808j")
 
 [node name="bottom_ui" type="TextureRect" parent="."]
 offset_top = 928.0
@@ -36,8 +34,9 @@ x_start = 64
 y_start = 800
 offset = 64
 y_offset = 5
+max_score = 2000
 piece_value = 10
-current_counter_value = 2
+current_counter_value = 20
 is_moves = true
 sinker_piece = ExtResource("6_dbhq1")
 sinkers_in_scene = true
@@ -77,6 +76,7 @@ script = ExtResource("8_e7x1c")
 [connection signal="make_ice" from="grid" to="ice_holder" method="_on_grid_make_ice"]
 [connection signal="make_lock" from="grid" to="lock_holder" method="_on_grid_make_lock"]
 [connection signal="make_slime" from="grid" to="slime_holder" method="_on_grid_make_slime"]
+[connection signal="setup_max_score" from="grid" to="top_ui" method="_on_grid_setup_max_score"]
 [connection signal="update_counter" from="grid" to="top_ui" method="_on_grid_update_counter"]
 [connection signal="update_score" from="grid" to="top_ui" method="_on_grid_update_score"]
 [connection signal="timeout" from="grid/Timer" to="grid" method="_on_timer_timeout"]

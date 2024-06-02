@@ -29,6 +29,9 @@ signal damage_concrete
 signal make_slime
 signal damage_slime
 
+@export var max_score:int
+signal setup_max_score
+
 # piece scenes
 var possible_pieces = [
 	preload ("res://scenes/pieces/yellow_piece.tscn"),
@@ -88,6 +91,7 @@ func _ready():
 	spawn_concrete()
 	spawn_slime()
 	emit_signal("update_counter", current_counter_value)
+	emit_signal("setup_max_score", max_score)
 	if !is_moves:
 		$Timer.start();
 
