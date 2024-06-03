@@ -4,6 +4,7 @@ extends Node
 @export var goal_texture:Texture
 @export var max_needed:int
 @export var goal_string:String
+var goal_met = false
 
 var number_collected = 0
 
@@ -16,5 +17,5 @@ func update_goal():
 	if number_collected < max_needed:
 		number_collected += 1
 	if number_collected == max_needed:
-		print("Goal met")
-	pass
+		if !goal_met:
+			goal_met = true
