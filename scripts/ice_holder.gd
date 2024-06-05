@@ -5,6 +5,10 @@ var width = 8;
 var height = 10;
 var ice = preload ("res://scenes/ice.tscn")
 
+# Goal signal
+signal break_ice
+@export var value:String
+
 func make_2d_array():
 	var array = []
 	for i in width:
@@ -39,3 +43,4 @@ func _on_grid_damage_ice(board_position):
 			if ice_piece.health <= 0:
 				ice_piece.queue_free()
 				ice_pieces[board_position.x][board_position.y] = null
+				emit_signal("break_ice", value)

@@ -100,7 +100,7 @@ func _ready():
 
 	 #_debug_make_color_bomb(5, 3)
 	 #_debug_make_row_bomb(3, 3)
-	_debug_make_row_bomb(4, 3)
+	#_debug_make_row_bomb(4, 3)
 	 #_debug_make_column_bomb(4, 4)
 	_debug_make_column_bomb(4, 5)
 
@@ -666,4 +666,8 @@ func _on_timer_timeout():
 
 func declare_game_over():
 	emit_signal("game_over")
+	state = wait
+
+
+func _on_goal_holder_game_win():
 	state = wait

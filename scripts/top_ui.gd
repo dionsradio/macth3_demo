@@ -53,3 +53,7 @@ func _on_goal_holder_create_goal(new_max, new_texture, new_value):
 func _on_grid_check_goal(goal_type):
 	for i in goal_container.get_child_count():
 		goal_container.get_child(i).update_goal_values(goal_type)
+
+func _on_ice_holder_break_ice(goal_type):
+	for i in goal_container.get_child_count():
+		goal_container.get_child(i).update_goal_values(goal_type)

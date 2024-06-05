@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://kxs3opd7ij4i" path="res://art/UI/Backgrounds/background 2.png" id="1_is670"]
 [ext_resource type="PackedScene" uid="uid://dlefwx1hroped" path="res://scenes/ui/top_ui.tscn" id="2_0021a"]
+[ext_resource type="PackedScene" uid="uid://dh3bq0pmmih41" path="res://scenes/bottom_ui.tscn" id="3_fqw1x"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="4_e21qk"]
-[ext_resource type="Texture2D" uid="uid://b64w20cle830q" path="res://art/UI/Bottom UI v 2.png" id="4_wodel"]
 [ext_resource type="Script" path="res://scripts/ice_holder.gd" id="5_j5gfv"]
 [ext_resource type="Script" path="res://scripts/concrete_holder.gd" id="6_5ykwp"]
 [ext_resource type="PackedScene" uid="uid://dn0885d5p8ix4" path="res://scenes/sinkers/sinker.tscn" id="6_dbhq1"]
@@ -12,8 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://cv3s2keethsf" path="res://scenes/ui/GameOverPanel.tscn" id="10_1dfrd"]
 [ext_resource type="Script" path="res://scripts/GoalHolder.gd" id="11_mg1bo"]
 [ext_resource type="PackedScene" uid="uid://cpg2yuk283bex" path="res://scenes/goal.tscn" id="12_uk0bn"]
-[ext_resource type="Texture2D" uid="uid://dpv2cg6sn6sjh" path="res://art/Pieces/Blue/Blue Piece.png" id="13_0s5t7"]
-[ext_resource type="Texture2D" uid="uid://cld7dv0ogyb1a" path="res://art/Pieces/Pink/Pink Piece.png" id="14_iytp2"]
+[ext_resource type="Texture2D" uid="uid://5atjb556xiyx" path="res://art/Obstacles/Ice.png" id="13_qhygq"]
+[ext_resource type="PackedScene" uid="uid://0tlhao4rxh8s" path="res://scenes/game_win_screen.tscn" id="14_vifom"]
 
 [node name="game_window" type="Node2D"]
 
@@ -24,11 +24,7 @@ texture = ExtResource("1_is670")
 
 [node name="top_ui" parent="." instance=ExtResource("2_0021a")]
 
-[node name="bottom_ui" type="TextureRect" parent="."]
-offset_top = 928.0
-offset_right = 576.0
-offset_bottom = 1020.0
-texture = ExtResource("4_wodel")
+[node name="bottom_ui" parent="." instance=ExtResource("3_fqw1x")]
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("4_e21qk")
@@ -38,13 +34,14 @@ x_start = 64
 y_start = 800
 offset = 64
 y_offset = 5
+empty_spaces = PackedVector2Array(3, 8, 3, 9, 4, 8, 4, 9)
+ice_spaces = PackedVector2Array(0, 0, 0, 1, 0, 7, 0, 8, 1, 0, 1, 7, 1, 8, 2, 3, 2, 4, 3, 3, 3, 4, 4, 3, 4, 4, 5, 3, 5, 4, 6, 0, 6, 7, 6, 8, 7, 0, 7, 1, 7, 7, 7, 8)
 max_score = 2000
 piece_value = 10
 current_counter_value = 20
 is_moves = true
 sinker_piece = ExtResource("6_dbhq1")
 sinkers_in_scene = true
-max_sinkers = 8
 
 [node name="Timer" type="Timer" parent="grid"]
 
@@ -59,6 +56,7 @@ one_shot = true
 
 [node name="ice_holder" type="Node2D" parent="."]
 script = ExtResource("5_j5gfv")
+value = "ice"
 
 [node name="concrete_holder" type="Node2D" parent="."]
 script = ExtResource("6_5ykwp")
@@ -75,14 +73,11 @@ script = ExtResource("8_e7x1c")
 script = ExtResource("11_mg1bo")
 
 [node name="Goal" parent="GoalHolder" instance=ExtResource("12_uk0bn")]
-goal_texture = ExtResource("13_0s5t7")
-max_needed = 5
-goal_string = "blue"
+goal_texture = ExtResource("13_qhygq")
+max_needed = 2
+goal_string = "ice"
 
-[node name="Goal2" parent="GoalHolder" instance=ExtResource("12_uk0bn")]
-goal_texture = ExtResource("14_iytp2")
-max_needed = 3
-goal_string = "pink"
+[node name="GameWinScreen" parent="." instance=ExtResource("14_vifom")]
 
 [connection signal="check_goal" from="grid" to="top_ui" method="_on_grid_check_goal"]
 [connection signal="check_goal" from="grid" to="GoalHolder" method="_on_grid_check_goal"]
@@ -102,7 +97,11 @@ goal_string = "pink"
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
+[connection signal="break_ice" from="ice_holder" to="top_ui" method="_on_ice_holder_break_ice"]
+[connection signal="break_ice" from="ice_holder" to="GoalHolder" method="_on_ice_holder_break_ice"]
 [connection signal="remove_concrete" from="concrete_holder" to="grid" method="_on_concrete_holder_remove_concrete"]
 [connection signal="remove_lock" from="lock_holder" to="grid" method="_on_lock_holder_remove_lock"]
 [connection signal="remove_slime" from="slime_holder" to="grid" method="_on_slime_holder_remove_slime"]
 [connection signal="create_goal" from="GoalHolder" to="top_ui" method="_on_goal_holder_create_goal"]
+[connection signal="game_win" from="GoalHolder" to="grid" method="_on_goal_holder_game_win"]
+[connection signal="game_win" from="GoalHolder" to="GameWinScreen" method="_on_goal_holder_game_win"]
