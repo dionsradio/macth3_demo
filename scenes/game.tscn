@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bb36smvbrxns7"]
+[gd_scene load_steps=16 format=3 uid="uid://bb36smvbrxns7"]
 
 [ext_resource type="Texture2D" uid="uid://kxs3opd7ij4i" path="res://art/UI/Backgrounds/background 2.png" id="1_is670"]
 [ext_resource type="PackedScene" uid="uid://dlefwx1hroped" path="res://scenes/ui/top_ui.tscn" id="2_0021a"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cpg2yuk283bex" path="res://scenes/goal.tscn" id="12_uk0bn"]
 [ext_resource type="Texture2D" uid="uid://5atjb556xiyx" path="res://art/Obstacles/Ice.png" id="13_qhygq"]
 [ext_resource type="PackedScene" uid="uid://0tlhao4rxh8s" path="res://scenes/game_win_screen.tscn" id="14_vifom"]
+[ext_resource type="PackedScene" uid="uid://dfnpf1x1qpy6q" path="res://scenes/ui/pause.tscn" id="15_o6s0j"]
 
 [node name="game_window" type="Node2D"]
 
@@ -38,7 +39,7 @@ empty_spaces = PackedVector2Array(3, 8, 3, 9, 4, 8, 4, 9)
 ice_spaces = PackedVector2Array(0, 0, 0, 1, 0, 7, 0, 8, 1, 0, 1, 7, 1, 8, 2, 3, 2, 4, 3, 3, 3, 4, 4, 3, 4, 4, 5, 3, 5, 4, 6, 0, 6, 7, 6, 8, 7, 0, 7, 1, 7, 7, 7, 8)
 max_score = 2000
 piece_value = 10
-current_counter_value = 20
+current_counter_value = 2
 is_moves = true
 sinker_piece = ExtResource("6_dbhq1")
 sinkers_in_scene = true
@@ -79,6 +80,9 @@ goal_string = "ice"
 
 [node name="GameWinScreen" parent="." instance=ExtResource("14_vifom")]
 
+[node name="Pause" parent="." instance=ExtResource("15_o6s0j")]
+
+[connection signal="pause_game" from="bottom_ui" to="Pause" method="_on_bottom_ui_pause_game"]
 [connection signal="check_goal" from="grid" to="top_ui" method="_on_grid_check_goal"]
 [connection signal="check_goal" from="grid" to="GoalHolder" method="_on_grid_check_goal"]
 [connection signal="damage_concrete" from="grid" to="concrete_holder" method="_on_grid_damage_concrete"]

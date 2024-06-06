@@ -2,6 +2,7 @@ extends Node
 
 signal create_goal
 signal game_win
+var game_already_win = false
 
 func _ready():
 	create_goals()
@@ -15,7 +16,8 @@ func _on_grid_check_goal(goal_type):
 	check_goals(goal_type)
 	
 func check_game_win():
-	if goals_met():
+	if goals_met() and !game_already_win:
+		game_already_win = true
 		emit_signal("game_win")
 
 func goals_met():

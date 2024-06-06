@@ -29,7 +29,7 @@ signal damage_concrete
 signal make_slime
 signal damage_slime
 
-@export var max_score:int
+@export var max_score: int
 signal setup_max_score
 
 # Goal check stuff
@@ -97,11 +97,11 @@ func _ready():
 	emit_signal("setup_max_score", max_score)
 	if !is_moves:
 		$Timer.start();
-
-	 #_debug_make_color_bomb(5, 3)
-	 #_debug_make_row_bomb(3, 3)
+	_debug_make_color_bomb(5, 3)
+	_debug_make_color_bomb(4, 3)
+	#_debug_make_row_bomb(3, 3)
 	#_debug_make_row_bomb(4, 3)
-	 #_debug_make_column_bomb(4, 4)
+	#_debug_make_column_bomb(4, 4)
 	_debug_make_column_bomb(4, 5)
 
 func _debug_make_column_bomb(_col, _row):
@@ -631,7 +631,7 @@ func destroy_sinkers():
 		if all_pieces[i][0] != null:
 			if is_piece_sinker(i, 0):
 				all_pieces[i][0].matched = true
-				add_to_array(Vector2(i,0), current_matched)
+				add_to_array(Vector2(i, 0), current_matched)
 				current_sinkers -= 1
 
 func _on_destroy_timer_timeout():
@@ -667,7 +667,6 @@ func _on_timer_timeout():
 func declare_game_over():
 	emit_signal("game_over")
 	state = wait
-
 
 func _on_goal_holder_game_win():
 	state = wait

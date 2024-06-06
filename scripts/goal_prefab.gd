@@ -14,7 +14,7 @@ func set_goal_values(new_max, new_texture, new_string):
 	goal_label.text = str(current_number) + "/" + str(max_value)
 
 func update_goal_values(goal_type):
-	print("update_goal_values:", goal_type)
+	# print("update_goal_values:", goal_type)
 	if goal_string == goal_type:
 		current_number += 1;
 		if current_number <= max_value:
