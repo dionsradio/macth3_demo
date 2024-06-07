@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cpg2yuk283bex"]
 
-[ext_resource type="Script" path="res://scripts/Goal.gd" id="1_42sno"]
+[ext_resource type="Script" path="res://Scenes/goal.gd" id="1_42sno"]
 
 [node name="Goal" type="Node"]
 script = ExtResource("1_42sno")

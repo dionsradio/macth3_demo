@@ -1,5 +1,5 @@
 [gd_scene load_steps=2 format=3 uid="uid://dwogh868swv10"]
 
-[ext_resource type="PackedScene" uid="uid://bb36smvbrxns7" path="res://scenes/game.tscn" id="1_qrh6m"]
+[ext_resource type="PackedScene" uid="uid://bb36smvbrxns7" path="res://Scenes/game.tscn" id="1_qrh6m"]
 
 [node name="game_window" instance=ExtResource("1_qrh6m")]

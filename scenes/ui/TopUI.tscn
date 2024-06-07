@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://dlefwx1hroped"]
 
 [ext_resource type="Texture2D" uid="uid://bqdoddkhgjkua" path="res://art/UI/Top UI v 2.png" id="1_2roc6"]
-[ext_resource type="Script" path="res://scripts/top_ui.gd" id="2_57hxq"]
+[ext_resource type="Script" path="res://Scenes/ui/top_ui.gd" id="2_57hxq"]
 [ext_resource type="FontFile" uid="uid://cju551ptyrf2o" path="res://fonts/Kenney Blocks.ttf" id="2_j7gle"]
 [ext_resource type="Texture2D" uid="uid://5oinc655fewe" path="res://art/UI/Score Bar Background.png" id="4_45rqt"]
 [ext_resource type="Texture2D" uid="uid://cthwa8wv08w7n" path="res://art/UI/Score Bar Fill.png" id="5_d7ilw"]
-[ext_resource type="PackedScene" uid="uid://wq23oouwclv" path="res://scenes/goal_prefab.tscn" id="6_r5m2o"]
+[ext_resource type="PackedScene" uid="uid://wq23oouwclv" path="res://Scenes/GoalPrefab.tscn" id="6_r5m2o"]
 
 [sub_resource type="FontVariation" id="FontVariation_wnjs7"]
 base_font = ExtResource("2_j7gle")

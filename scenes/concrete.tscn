@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d0wffwqwwllt2"]
 
-[ext_resource type="Script" path="res://scripts/ice.gd" id="1_w3fu0"]
+[ext_resource type="Script" path="res://Scenes/ice.gd" id="1_w3fu0"]
 [ext_resource type="Texture2D" uid="uid://bxhd381kv8niv" path="res://art/Obstacles/Concrete.png" id="2_sygxd"]
 
 [node name="concrete" type="Node2D"]

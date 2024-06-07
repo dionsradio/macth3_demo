@@ -3,11 +3,11 @@ extends Node2D
 var ice_pieces = [];
 var width = 8;
 var height = 10;
-var ice = preload ("res://scenes/ice.tscn")
+var ice = preload ("res://Scenes/Ice.tscn")
 
 # Goal signal
 signal break_ice
-@export var value:String
+@export var value: String
 
 func make_2d_array():
 	var array = []

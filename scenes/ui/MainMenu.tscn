@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://bwmlsur74hfbx"]
 
-[ext_resource type="PackedScene" uid="uid://cjchjfu3mlgft" path="res://scenes/ui/base_menu_panel.tscn" id="1_y01kg"]
+[ext_resource type="PackedScene" uid="uid://cjchjfu3mlgft" path="res://Scenes/ui/BaseMenuPanel.tscn" id="1_y01kg"]
 [ext_resource type="Texture2D" uid="uid://io0bn6k8c0mf" path="res://art/UI/godot match 3 logo.png" id="2_g5a54"]
-[ext_resource type="Script" path="res://scripts/main.gd" id="2_go5kj"]
+[ext_resource type="Script" path="res://Scenes/ui/main_menu.gd" id="2_go5kj"]
 [ext_resource type="Texture2D" uid="uid://b2v12onej6xdu" path="res://art/UI/Buttons/Play Button.png" id="3_1s4u2"]
 [ext_resource type="Texture2D" uid="uid://bio87br8trwhf" path="res://art/UI/Buttons/Settings Button.png" id="4_7iaut"]
 [ext_resource type="AnimationLibrary" uid="uid://bfbwsogq5ln65" path="res://animations/slide.res" id="6_65a2i"]

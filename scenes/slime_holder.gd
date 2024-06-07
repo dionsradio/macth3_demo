@@ -3,7 +3,7 @@ extends Node2D
 var slime_pieces = [];
 var width = 8;
 var height = 10;
-var slime = preload ("res://scenes/slime.tscn")
+var slime = preload ("res://Scenes/slime.tscn")
 
 signal remove_slime
 

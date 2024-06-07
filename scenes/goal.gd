@@ -1,9 +1,9 @@
 extends Node
 
 # Goal information
-@export var goal_texture:Texture
-@export var max_needed:int
-@export var goal_string:String
+@export var goal_texture: Texture
+@export var max_needed: int
+@export var goal_string: String
 var goal_met = false
 
 var number_collected = 0

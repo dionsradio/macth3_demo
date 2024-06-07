@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://c0bw2ycse70fy"]
 
 [ext_resource type="Texture2D" uid="uid://cd4x3fsl81kbq" path="res://art/Particles/Star Particle.png" id="1_gemaf"]
-[ext_resource type="Script" path="res://scripts/destroy_particle.gd" id="2_dtl7w"]
+[ext_resource type="Script" path="res://Scenes/particles/destroy_particle.gd" id="2_dtl7w"]
 
 [sub_resource type="Gradient" id="Gradient_ylxrh"]
 offsets = PackedFloat32Array(0, 0, 0, 0, 1)

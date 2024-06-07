@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cjchjfu3mlgft"]
 
-[ext_resource type="Script" path="res://scripts/base_menu_panel.gd" id="1_sigvt"]
+[ext_resource type="Script" path="res://Scenes/ui/base_menu_panel.gd" id="1_sigvt"]
 [ext_resource type="AnimationLibrary" uid="uid://bfbwsogq5ln65" path="res://animations/slide.res" id="2_5k4cy"]
 
 [sub_resource type="Animation" id="Animation_7k7gr"]

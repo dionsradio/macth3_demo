@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dij700j4sler3"]
 
-[ext_resource type="Script" path="res://scripts/ice.gd" id="1_ke0qe"]
+[ext_resource type="Script" path="res://Scenes/ice.gd" id="1_ke0qe"]
 [ext_resource type="Texture2D" uid="uid://ccjps7uqllfkk" path="res://art/Obstacles/Locks.png" id="1_u01wn"]
 
 [node name="licorice" type="Node2D"]

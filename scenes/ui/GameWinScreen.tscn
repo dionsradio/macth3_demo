@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://0tlhao4rxh8s"]
 
-[ext_resource type="Script" path="res://GameWinScreen.gd" id="1_qd0mq"]
+[ext_resource type="Script" path="res://Scenes/ui/game_win_screen.gd" id="1_iocgq"]
 [ext_resource type="Texture2D" uid="uid://cdp2e68ssy2bh" path="res://art/UI/Panels/Win Panel.png" id="2_hkqdx"]
 [ext_resource type="FontFile" uid="uid://3yrivebt0xi8" path="res://fonts/Kenney Pixel Square.ttf" id="3_00b71"]
 [ext_resource type="Texture2D" uid="uid://c7q27byot4tcv" path="res://art/UI/Buttons/Continue Button Game Win.png" id="3_jfmge"]
@@ -9,7 +9,7 @@
 [node name="GameWinScreen" type="CanvasLayer"]
 offset = Vector2(576, 0)
 transform = Transform2D(1, 0, 0, 1, 576, 0)
-script = ExtResource("1_qd0mq")
+script = ExtResource("1_iocgq")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15

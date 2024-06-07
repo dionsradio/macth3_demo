@@ -1,9 +1,9 @@
-extends Node2D
+extends Node
 
 var concrete_pieces = [];
 var width = 8;
 var height = 10;
-var concrete = preload ("res://scenes/concrete.tscn")
+var concrete = preload ("res://Scenes/Concrete.tscn")
 
 signal remove_concrete
 

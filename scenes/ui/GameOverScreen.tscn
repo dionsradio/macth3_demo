@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cv3s2keethsf"]
+[gd_scene load_steps=5 format=3 uid="uid://cv3s2keethsf"]
 
 [ext_resource type="Texture2D" uid="uid://bht5a17sykjpp" path="res://art/UI/Panels/GameOver Background.png" id="1_52k0y"]
-[ext_resource type="Script" path="res://scripts/game_over_panel.gd" id="1_demk0"]
 [ext_resource type="Texture2D" uid="uid://cslest2h22yhp" path="res://art/UI/Buttons/Quit Button.png" id="2_ao3sv"]
 [ext_resource type="Texture2D" uid="uid://cnytx8v8pkp4a" path="res://art/UI/Buttons/Restart Button.png" id="3_h0yw1"]
 [ext_resource type="AnimationLibrary" uid="uid://bfbwsogq5ln65" path="res://animations/slide.res" id="6_dfbnp"]
@@ -9,7 +8,6 @@
 [node name="GameOverPanel" type="CanvasLayer"]
 offset = Vector2(576, 0)
 transform = Transform2D(1, 0, 0, 1, 576, 0)
-script = ExtResource("1_demk0")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15

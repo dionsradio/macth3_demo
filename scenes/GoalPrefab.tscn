@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://wq23oouwclv"]
 
 [ext_resource type="Texture2D" uid="uid://c88yuojmbp5jq" path="res://art/UI/goal background.png" id="1_t6ig2"]
-[ext_resource type="Script" path="res://scripts/goal_prefab.gd" id="2_3qtae"]
+[ext_resource type="Script" path="res://Scenes/goal_prefab.gd" id="2_3qtae"]
 [ext_resource type="Texture2D" uid="uid://dpv2cg6sn6sjh" path="res://art/Pieces/Blue/Blue Piece.png" id="2_ifl8y"]
 [ext_resource type="FontFile" uid="uid://3yrivebt0xi8" path="res://fonts/Kenney Pixel Square.ttf" id="3_m1sdh"]
 

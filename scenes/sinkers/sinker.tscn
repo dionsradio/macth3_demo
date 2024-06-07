@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dn0885d5p8ix4"]
 
 [ext_resource type="Texture2D" uid="uid://7xrkk2kfkeh6" path="res://art/Sinkers/Sinker v3.png" id="1_1ef5k"]
-[ext_resource type="PackedScene" uid="uid://3gk2t2y4su4y" path="res://scenes/pieces/piece.tscn" id="1_5vtbw"]
+[ext_resource type="PackedScene" uid="uid://3gk2t2y4su4y" path="res://Scenes/pieces/piece.tscn" id="1_5vtbw"]
 
 [node name="sinker" instance=ExtResource("1_5vtbw")]
 color = "Sinker"

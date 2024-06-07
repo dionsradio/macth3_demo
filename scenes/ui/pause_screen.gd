@@ -1,4 +1,4 @@
-extends "res://scripts/base_menu_panel.gd"
+extends "res://Scenes/ui/base_menu_panel.gd"
 
 func _on_quit_pressed():
 	get_tree().quit()

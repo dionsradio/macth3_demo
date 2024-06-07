@@ -3,7 +3,7 @@ extends Node2D
 var lock_pieces = [];
 var width = 8;
 var height = 10;
-var lock = preload ("res://scenes/licorice.tscn")
+var lock = preload ("res://Scenes/Licorice.tscn")
 
 signal remove_lock
 

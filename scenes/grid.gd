@@ -37,12 +37,12 @@ signal check_goal
 
 # piece scenes
 var possible_pieces = [
-	preload ("res://scenes/pieces/yellow_piece.tscn"),
-	preload ("res://scenes/pieces/green_piece.tscn"),
-	preload ("res://scenes/pieces/blue_piece.tscn"),
-	#preload ("res://scenes/pieces/light_green_piece.tscn"),
-	 preload ("res://scenes/pieces/pink_piece.tscn"),
-	 preload ("res://scenes/pieces/orange_piece.tscn"),
+	preload ("res://Scenes/pieces/YellowPiece.tscn"),
+	preload ("res://Scenes/pieces/GreenPiece.tscn"),
+	preload ("res://Scenes/pieces/BluePiece.tscn"),
+	#preload ("res://Scenes/pieces/LightGreenPiece.tscn"),
+	 preload ("res://Scenes/pieces/PinkPiece.tscn"),
+	 preload ("res://Scenes/pieces/OrangePiece.tscn"),
 ];
 
 # generated pieces
@@ -78,8 +78,8 @@ signal game_over
 var current_sinkers = 0
 
 # Effects
-var particle_effect = preload ("res://scenes/particles/ParticleEffect.tscn")
-var animated_effect = preload ("res://scenes/particles/AnimatedExplosion.tscn")
+var particle_effect = preload ("res://Scenes/particles/ParticleEffect.tscn")
+var animated_effect = preload ("res://Scenes/particles/AnimatedExplosion.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
