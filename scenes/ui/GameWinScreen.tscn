@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cdp2e68ssy2bh" path="res://art/UI/Panels/Win Panel.png" id="2_hkqdx"]
 [ext_resource type="FontFile" uid="uid://3yrivebt0xi8" path="res://fonts/Kenney Pixel Square.ttf" id="3_00b71"]
 [ext_resource type="Texture2D" uid="uid://c7q27byot4tcv" path="res://art/UI/Buttons/Continue Button Game Win.png" id="3_jfmge"]
-[ext_resource type="AnimationLibrary" uid="uid://bfbwsogq5ln65" path="res://animations/slide.res" id="5_hjww1"]
+[ext_resource type="AnimationLibrary" uid="uid://ed3ajcxmwkk0" path="res://animations/slide.res" id="5_hjww1"]
 
 [node name="GameWinScreen" type="CanvasLayer"]
 offset = Vector2(576, 0)

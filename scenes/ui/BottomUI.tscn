@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dh3bq0pmmih41"]
+[gd_scene load_steps=7 format=3 uid="uid://dh3bq0pmmih41"]
 
 [ext_resource type="Texture2D" uid="uid://b64w20cle830q" path="res://art/UI/Bottom UI v 2.png" id="1_wr0qy"]
 [ext_resource type="Texture2D" uid="uid://b5evmxidgss0l" path="res://art/UI/Buttons/Pause Button.png" id="2_5hxpa"]
+[ext_resource type="Script" path="res://Scenes/ui/bottom_ui.gd" id="2_tgmsn"]
 [ext_resource type="Texture2D" uid="uid://dy7duyd88x8qf" path="res://art/UI/Buttons/Make Color Bomb Button.png" id="3_5mqa7"]
 [ext_resource type="Texture2D" uid="uid://cj8iv4s8dsspc" path="res://art/UI/Buttons/Mallet Button.png" id="4_wugax"]
 [ext_resource type="Texture2D" uid="uid://d1utyt1bn5cmr" path="res://art/UI/Buttons/Plus Ten Seconds Button.png" id="5_2m2pc"]
@@ -11,6 +12,7 @@ offset_top = 928.0
 offset_right = 576.0
 offset_bottom = 1020.0
 texture = ExtResource("1_wr0qy")
+script = ExtResource("2_tgmsn")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

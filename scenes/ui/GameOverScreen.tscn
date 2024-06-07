@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://cv3s2keethsf"]
+[gd_scene load_steps=6 format=3 uid="uid://cv3s2keethsf"]
 
+[ext_resource type="Script" path="res://Scenes/ui/game_over_screen.gd" id="1_3v6nx"]
 [ext_resource type="Texture2D" uid="uid://bht5a17sykjpp" path="res://art/UI/Panels/GameOver Background.png" id="1_52k0y"]
 [ext_resource type="Texture2D" uid="uid://cslest2h22yhp" path="res://art/UI/Buttons/Quit Button.png" id="2_ao3sv"]
 [ext_resource type="Texture2D" uid="uid://cnytx8v8pkp4a" path="res://art/UI/Buttons/Restart Button.png" id="3_h0yw1"]
-[ext_resource type="AnimationLibrary" uid="uid://bfbwsogq5ln65" path="res://animations/slide.res" id="6_dfbnp"]
+[ext_resource type="AnimationLibrary" uid="uid://ed3ajcxmwkk0" path="res://animations/slide.res" id="6_dfbnp"]
 
-[node name="GameOverPanel" type="CanvasLayer"]
+[node name="GameOverScreen" type="CanvasLayer"]
 offset = Vector2(576, 0)
 transform = Transform2D(1, 0, 0, 1, 576, 0)
+script = ExtResource("1_3v6nx")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -36,6 +38,7 @@ theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 256
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
+metadata/_edit_use_anchors_ = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextureRect/MarginContainer"]
 layout_mode = 2

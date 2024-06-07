@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://Scenes/ui/settings_menu.gd" id="2_srovn"]
 [ext_resource type="Texture2D" uid="uid://c5gn800c4rgsa" path="res://art/UI/Buttons/Sound On Button.png" id="3_djk0c"]
 [ext_resource type="Texture2D" uid="uid://dhi1qefjukmpf" path="res://art/UI/Buttons/Back Button.png" id="4_5ajxt"]
-[ext_resource type="AnimationLibrary" uid="uid://bfbwsogq5ln65" path="res://animations/slide.res" id="6_14tvl"]
+[ext_resource type="AnimationLibrary" uid="uid://ed3ajcxmwkk0" path="res://animations/slide.res" id="6_14tvl"]
 
 [node name="SettingsMenu" instance=ExtResource("1_46qbp")]
 script = ExtResource("2_srovn")
@@ -28,6 +28,7 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="AnimationPlayer" parent="." index="1"]
+root_node = NodePath("..")
 libraries = {
 "slide": ExtResource("6_14tvl")
 }

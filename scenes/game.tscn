@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bb36smvbrxns7"]
+[gd_scene load_steps=16 format=3 uid="uid://bb36smvbrxns7"]
 
 [ext_resource type="Texture2D" uid="uid://kxs3opd7ij4i" path="res://art/UI/Backgrounds/background 2.png" id="1_is670"]
 [ext_resource type="PackedScene" uid="uid://dlefwx1hroped" path="res://Scenes/ui/TopUI.tscn" id="2_0021a"]
@@ -9,57 +9,12 @@
 [ext_resource type="Script" path="res://Scenes/lock_holder.gd" id="6_vgu5m"]
 [ext_resource type="Script" path="res://Scenes/slime_holder.gd" id="8_e7x1c"]
 [ext_resource type="PackedScene" uid="uid://cv3s2keethsf" path="res://Scenes/ui/GameOverScreen.tscn" id="10_1dfrd"]
+[ext_resource type="Script" path="res://Scenes/goal_holder.gd" id="11_04275"]
 [ext_resource type="Script" path="res://Scenes/concrete_holder.gd" id="11_mg1bo"]
 [ext_resource type="PackedScene" uid="uid://cpg2yuk283bex" path="res://Scenes/goal.tscn" id="12_uk0bn"]
+[ext_resource type="Texture2D" uid="uid://5atjb556xiyx" path="res://art/Obstacles/Ice.png" id="13_i31il"]
 [ext_resource type="PackedScene" uid="uid://0tlhao4rxh8s" path="res://Scenes/ui/GameWinScreen.tscn" id="14_vifom"]
 [ext_resource type="PackedScene" uid="uid://dfnpf1x1qpy6q" path="res://Scenes/ui/PauseScreen.tscn" id="15_o6s0j"]
-
-[sub_resource type="GDScript" id="GDScript_63fhe"]
-script/source = "extends Node
-
-var concrete_pieces = [];
-var width = 8;
-var height = 10;
-var concrete = preload (\"res://Scenes/Concrete.tscn\")
-
-signal remove_concrete
-
-func make_2d_array():
-	var array = []
-	for i in width:
-		array.append([])
-		for j in height:
-			array[i].append(null)
-	return array;
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	#concrete_pieces = make_2d_array()
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-func _on_grid_make_concrete(board_position):
-	#print(\"_on_grid_make_concrete\")
-	if concrete_pieces.size() == 0:
-		concrete_pieces = make_2d_array()
-	var current = concrete.instantiate()
-	add_child(current)
-	current.position = Vector2(board_position.x * 64 + 64, -board_position.y * 64 + 800)
-	concrete_pieces[board_position.x][board_position.y] = current
-
-func _on_grid_damage_concrete(board_position):
-	if concrete_pieces.size() > 0:
-		var concrete_piece = concrete_pieces[board_position.x][board_position.y]
-		if concrete_piece != null:
-			concrete_piece.take_damage(1)
-			if concrete_piece.health <= 0:
-				concrete_piece.queue_free()
-				concrete_pieces[board_position.x][board_position.y] = null
-				emit_signal(\"remove_concrete\", board_position)
-"
 
 [node name="Game" type="Node2D"]
 
@@ -116,14 +71,18 @@ script = ExtResource("8_e7x1c")
 [node name="GameOverPanel" parent="." instance=ExtResource("10_1dfrd")]
 
 [node name="GoalHolder" type="Node" parent="."]
-script = SubResource("GDScript_63fhe")
+script = ExtResource("11_04275")
 
 [node name="Goal" parent="GoalHolder" instance=ExtResource("12_uk0bn")]
+goal_texture = ExtResource("13_i31il")
+max_needed = 2
+goal_string = "ice"
 
 [node name="GameWinScreen" parent="." instance=ExtResource("14_vifom")]
 
-[node name="Pause" parent="." instance=ExtResource("15_o6s0j")]
+[node name="PauseScreen" parent="." instance=ExtResource("15_o6s0j")]
 
+[connection signal="pause_game" from="bottom_ui" to="PauseScreen" method="_on_bottom_ui_pause_game"]
 [connection signal="check_goal" from="grid" to="top_ui" method="_on_grid_check_goal"]
 [connection signal="check_goal" from="grid" to="GoalHolder" method="_on_grid_check_goal"]
 [connection signal="damage_concrete" from="grid" to="concrete_holder" method="_on_grid_damage_concrete"]
@@ -147,3 +106,5 @@ script = SubResource("GDScript_63fhe")
 [connection signal="remove_concrete" from="concrete_holder" to="grid" method="_on_concrete_holder_remove_concrete"]
 [connection signal="remove_lock" from="lock_holder" to="grid" method="_on_lock_holder_remove_lock"]
 [connection signal="remove_slime" from="slime_holder" to="grid" method="_on_slime_holder_remove_slime"]
+[connection signal="create_goal" from="GoalHolder" to="top_ui" method="_on_goal_holder_create_goal"]
+[connection signal="game_win" from="GoalHolder" to="GameWinScreen" method="_on_goal_holder_game_win"]

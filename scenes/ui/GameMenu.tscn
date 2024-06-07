@@ -4,13 +4,18 @@
 [ext_resource type="Script" path="res://Scenes/ui/game_menu.gd" id="1_87v1y"]
 [ext_resource type="PackedScene" uid="uid://nll06uvdfs2m" path="res://Scenes/ui/SettingsMenu.tscn" id="2_l8qcr"]
 
-[node name="Game Menu" type="Control"]
+[node name="GameMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_87v1y")
 
-[node name="Main" parent="." instance=ExtResource("1_1p1j4")]
+[node name="MainMenu" parent="." instance=ExtResource("1_1p1j4")]
 
-[node name="Settings" parent="." instance=ExtResource("2_l8qcr")]
+[node name="SettingsMenu" parent="." instance=ExtResource("2_l8qcr")]
+
+[connection signal="play_pressed" from="MainMenu" to="." method="_on_main_menu_play_pressed"]
+[connection signal="settings_pressed" from="MainMenu" to="." method="_on_main_menu_settings_pressed"]
+[connection signal="back_button" from="SettingsMenu" to="." method="_on_settings_menu_back_button"]
+[connection signal="sound_change" from="SettingsMenu" to="." method="_on_settings_menu_sound_change"]
