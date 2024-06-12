@@ -39,7 +39,7 @@ empty_spaces = PackedVector2Array(3, 8, 3, 9, 4, 8, 4, 9)
 ice_spaces = PackedVector2Array(0, 0, 0, 1, 0, 7, 0, 8, 1, 0, 1, 7, 1, 8, 2, 3, 2, 4, 3, 3, 3, 4, 4, 3, 4, 4, 5, 3, 5, 4, 6, 0, 6, 7, 6, 8, 7, 0, 7, 1, 7, 7, 7, 8)
 max_score = 2000
 piece_value = 10
-current_counter_value = 2
+current_counter_value = 20
 is_moves = true
 sinker_piece = ExtResource("6_dbhq1")
 sinkers_in_scene = true
@@ -75,7 +75,7 @@ script = ExtResource("11_04275")
 
 [node name="Goal" parent="GoalHolder" instance=ExtResource("12_uk0bn")]
 goal_texture = ExtResource("13_i31il")
-max_needed = 2
+max_needed = 22
 goal_string = "ice"
 
 [node name="GameWinScreen" parent="." instance=ExtResource("14_vifom")]

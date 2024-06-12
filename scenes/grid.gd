@@ -97,12 +97,12 @@ func _ready():
 	emit_signal("setup_max_score", max_score)
 	if !is_moves:
 		$Timer.start();
-	_debug_make_color_bomb(5, 3)
-	_debug_make_color_bomb(4, 3)
+	#_debug_make_color_bomb(5, 3)
+	#_debug_make_color_bomb(5, 4)
 	#_debug_make_row_bomb(3, 3)
 	#_debug_make_row_bomb(4, 3)
 	#_debug_make_column_bomb(4, 4)
-	_debug_make_column_bomb(4, 5)
+	#_debug_make_column_bomb(4, 5)
 
 func _debug_make_column_bomb(_col, _row):
 	if all_pieces[_col][_row] != null:
@@ -175,15 +175,15 @@ func spawn_pieces():
 		for j in height:
 			if !restricted_fill(Vector2(i, j)) and all_pieces[i][j] == null:
 				# choose a random number and store it
-				var rand = floor(randf_range(0, possible_pieces.size()));
+				var rand = floor(randf_range(0, possible_pieces.size()))
 				var piece = possible_pieces[rand].instantiate(); # instance() func is no longer used;
 				while (match_at(i, j, piece.color)):
-					rand = floor(randf_range(0, possible_pieces.size()));
-					piece = possible_pieces[rand].instantiate();
+					rand = floor(randf_range(0, possible_pieces.size()))
+					piece = possible_pieces[rand].instantiate()
 				piece.position = grid_to_pixel(i, j)
 				all_pieces[i][j] = piece;
-				add_child(piece);
-
+				add_child(piece)
+ 
 func spawn_ice():
 	for i in ice_spaces.size():
 		emit_signal("make_ice", ice_spaces[i])
@@ -405,25 +405,27 @@ func find_bombs():
 		if matched_col >= 3&&matched_row >= 3:
 			make_bomb(0, curr_color)
 			print("adjacent bomb")
-			return
+			continue
 		if matched_col == 4:
 			print("column bomb")
 			make_bomb(1, curr_color)
-			return
+			continue
 		if matched_row == 4:
 			print("row bomb")
 			make_bomb(2, curr_color)
-			return
+			continue
 		if matched_col == 5 or matched_row == 5:
 			print("color bomb")
 			make_bomb(3, curr_color)
-			return
+			continue
 
 func make_bomb(bomb_type, color):
 	for i in current_matched.size():
 		var curr_col = current_matched[i].x
 		var curr_row = current_matched[i].y
 		if all_pieces[curr_col][curr_row] == piece_one and piece_one.color == color:
+			damage_special(curr_col, curr_row)
+			emit_signal("check_goal", all_pieces[curr_col][curr_row].color)
 			piece_one.matched = false
 			change_bomb(bomb_type, piece_one)
 		if all_pieces[curr_col][curr_row] == piece_two and piece_two.color == color:
@@ -455,7 +457,7 @@ func destroy_matched():
 					if all_pieces[i][j].color == "Color":
 						print("Color Bomb")
 					emit_signal("check_goal", all_pieces[i][j].color)
-					damage_specical(i, j)
+					damage_special(i, j)
 					destroyed = true
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
@@ -492,7 +494,7 @@ func check_slime(column, row):
 	if row > 0:
 		emit_signal("damage_slime", Vector2(column, row - 1))
 
-func damage_specical(column, row):
+func damage_special(column, row):
 	emit_signal("damage_ice", Vector2(column, row))
 	emit_signal("damage_lock", Vector2(column, row))
 	check_concrete(column, row)
