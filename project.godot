@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="proj.match3.code.nantong"
-run/main_scene="res://Scenes/Game.tscn"
+config/name="match3_demo"
+run/main_scene="res://Scenes/ui/GameMenu.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
