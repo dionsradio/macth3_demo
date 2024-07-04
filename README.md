@@ -20,7 +20,7 @@ Make a candy crush like game using Godot from Mister Taft Creates's Youtube Play
 - [x] Part 11: Destroying Matched Pieces
 - [x] Part 12: Collapsing Columns
 - [x] Part 13: Refilling the Columns
-- [ ] Part 14:Sliding the pieces in
+- [x] Part 14:Sliding the pieces in
 - [x] Part 15:Makeing a game loop with a state machine
 - [x] Part 16: Swaping Pieces Back
 - [x] Part 17: Empty Spaces
