@@ -1,10 +1,10 @@
 # Match3 game demo using Godot
 
-Just for learning
-
 Make a candy crush like game using Godot from Mister Taft Creates's Youtube Playlist https://www.youtube.com/watch?v=YhykrMFHOV4&list=PL4vbr3u7UKWqwQlvwvgNcgDL1p_3hcNn2
 
 If you have any questions, feel free to open an issue.
+
+This Project is developed with Godot 4.2
 
 # Current Prograss
 
